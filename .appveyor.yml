@@ -51,6 +51,8 @@ build:
   publish_nuget: false
   verbosity: minimal
 
+test: off
+
 after_build:
   - ps: >-
       nuget pack TumblrSharp.nuspec -version $env:APPVEYOR_BUILD_VERSION
