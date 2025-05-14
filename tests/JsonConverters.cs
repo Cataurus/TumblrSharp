@@ -70,6 +70,8 @@ namespace TestingTumblrSharp
         {
             TumblrClient tc = new TumblrClientFactory().Create<TumblrClient>(_consumerKey, _consumerSecret, new Token(_accessKey, _accessSecret));
 
+            Assert.IsNotNull(tc);
+
             // find a post with notes
             PhotoPost notePost = null;
 
@@ -119,6 +121,8 @@ namespace TestingTumblrSharp
         public async Task TrailConverter()
         {
             TumblrClient tc = new TumblrClientFactory().Create<TumblrClient>(_consumerKey, _consumerSecret, new Token(_accessKey, _accessSecret));
+
+            Assert.IsNotNull(tc);
 
             // find a post with trials
             BasePost post = null;
