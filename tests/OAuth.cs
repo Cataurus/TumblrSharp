@@ -207,7 +207,7 @@ namespace TestingTumblrSharp
 
             Assert.IsNotNull(url);
 
-            Assert.AreNotEqual(url, string.Empty);
+            Assert.AreNotEqual(url.ToString(), string.Empty);
 
 
         }
