@@ -122,6 +122,8 @@ namespace TestingTumblrSharp
         {
             string CONSUMERKEY = Environment.GetEnvironmentVariable("CONSUMERKEY");
             Console.WriteLine("ConsumerKey: " + CONSUMERKEY);
+            Console.WriteLine("_consumerKey: " + _consumerKey);
+            Console.WriteLine("_consumerSecret: " + _consumerSecret);
 
             TumblrClient tc = new TumblrClientFactory().Create<TumblrClient>(_consumerKey, _consumerSecret, new Token(_accessKey, _accessSecret));
 
