@@ -143,6 +143,20 @@ namespace TestingTumblrSharp
         }
 
         [TestMethod]
+        public async Task OAuth_GetAuthorizeUrl()
+        {
+            Console.WriteLine("OAuth_GetAuthorizeUrl");
+
+            OAuthClient oAuthClient = new OAuthClientFactory().Create(_consumerKey, _consumerSecret);
+            
+            Token requestToken = await oAuthClient.GetRequestTokenAsync(_callbackUrl);
+
+            Uri url = oAuthClient.GetAuthorizeUrl(requestToken);
+
+            Assert.IsNotNull(url);
+        }
+
+        [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void OAuth_GetAuthorizeUrl_Arg_null_1()
         {
