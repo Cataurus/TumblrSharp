@@ -21,8 +21,6 @@ namespace TestingTumblrSharp
         private readonly string _accessKey = "F1G7BF1JW4f1VKJ93xJSi7D66yZKN3Uj0bArn5i5riwVEnMHuU";
         private readonly string _accessSecret = "O977YH42yg98IsS9BAk80r5e5grYQDY9HauVmgf0aEmceZ2UTz";
 
-        private string CONSUMERKEY = Environment.GetEnvironmentVariable("ConsumerKey");
-
         #region NoteConverter
 
          [TestMethod]
@@ -122,6 +120,7 @@ namespace TestingTumblrSharp
         [TestMethod]
         public async Task TrailConverter()
         {
+            string CONSUMERKEY = Environment.GetEnvironmentVariable("CONSUMERKEY");
             Console.WriteLine("ConsumerKey: " + CONSUMERKEY);
 
             TumblrClient tc = new TumblrClientFactory().Create<TumblrClient>(_consumerKey, _consumerSecret, new Token(_accessKey, _accessSecret));

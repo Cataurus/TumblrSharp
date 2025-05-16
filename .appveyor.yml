@@ -25,8 +25,8 @@ assembly_info:
   assembly_informational_version: "{version}"
 
 environment:
-  ConsumerKey:
-    secure: QAUTMaa5qZ3EoZTCIROl6kfRfpw7hUSQtZbjQhW3ax/oxSz3jiR6sRUmhfpj9yL9bu7XZv7bl4C1IuuZS1+1Dw==
+  CONSUMERKEY:
+    secure: B3g3cp78xnEpc3ieCJOsNsw4BRYUskmpTPg0QCX4Diw=
   ConsumerSecret:
     secure: 1Lcag3U2vj4mdhcb9W4038p3ohtgM3FCmshCHbhpRlsIW3pb7f/B6gbh9wJSpoQN1p91qjDRmsn5txSFl5Kasg==
   AccessKey:
