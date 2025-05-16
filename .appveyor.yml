@@ -51,7 +51,7 @@ build:
   publish_nuget: false
   verbosity: minimal
 
-test: off
+test: on
 
 after_build:
   - ps: >-

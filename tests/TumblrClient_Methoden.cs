@@ -23,9 +23,9 @@ namespace TestingTumblrSharp
         // help vars
         private static readonly string _version = typeof(TumblrClient).Assembly.GetName().Version.ToString();
 
-        private readonly string _postText = "This is a textpost test.";
+        private readonly string _postText = "This is a textpost test. " + DateTime.Now.ToString();
 
-        private readonly string _postTextDelete = "This is a textpost for Deletetest.";
+        private readonly string _postTextDelete = "This is a textpost for Deletetest. " + DateTime.Now.ToString();
 
         private readonly string _postTextQueue = "This is a textpost test in queue posted " + DateTime.Now.ToString() + ".";
 

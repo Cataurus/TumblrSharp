@@ -58,6 +58,9 @@ Version 1.2.0.*
 - Example for Asp.Net, Azure Function
 - Api-Documentation
 
+Version 1.2.1.*
+- no longer supported platforms removed
+
 Version 2.0 
 - Support Neues Post Format (npf)
 - Create / Edit / Fetch Post for npf
@@ -65,9 +68,8 @@ Version 2.0
 Which platforms are supported?
 ========
 
-- Portable
-- [.NET Standard](https://docs.microsoft.com/en-us/dotnet/standard/net-standard) 1.1, 1.2, 1.3, 2.0
-- .Net Core 2.2
+- [.NET Standard](https://docs.microsoft.com/en-us/dotnet/standard/net-standard) 2.0
+- .Net Core 3.1
 
 Contributing 
 ========
