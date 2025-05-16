@@ -122,6 +122,8 @@ namespace TestingTumblrSharp
         [TestMethod]
         public async Task TrailConverter()
         {
+            Console.WriteLine("ConsumerKey: " + CONSUMERKEY);
+
             TumblrClient tc = new TumblrClientFactory().Create<TumblrClient>(_consumerKey, _consumerSecret, new Token(_accessKey, _accessSecret));
 
             Assert.IsNotNull(tc);
