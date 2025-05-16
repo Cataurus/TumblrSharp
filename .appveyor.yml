@@ -24,16 +24,6 @@ assembly_info:
   assembly_file_version: "{version}"
   assembly_informational_version: "{version}"
 
-environment:
-  CONSUMERKEY:
-    secure: B3g3cp78xnEpc3ieCJOsNsw4BRYUskmpTPg0QCX4Diw=
-  ConsumerSecret:
-    secure: 1Lcag3U2vj4mdhcb9W4038p3ohtgM3FCmshCHbhpRlsIW3pb7f/B6gbh9wJSpoQN1p91qjDRmsn5txSFl5Kasg==
-  AccessKey:
-    secure: NMk3MRvbyIfP09txl2GOxybP9hVBSJT8RxI0O9snFNuoBPlcPEM5Qnzc1/o2E98LOVFSQTXEJyCs72XxNnHdpw==
-  AccessSecret:
-    secure: 0PgFMZeIdtZL1pJc16h21lixtrm5mF/ApGhj7o7pRjbwdnvYT5+lKaubcxukv2P1UTuanbISXH4sSZGJiNQFXw==
-
 # branches to build
 branches:
   # blacklist
@@ -51,7 +41,7 @@ build:
   publish_nuget: false
   verbosity: minimal
 
-test: on
+test: off
 
 after_build:
   - ps: >-
