@@ -67,22 +67,34 @@ namespace DontPanic.TumblrSharp
 			: base(String.Format("https://api.tumblr.com/v2/blog/{0}/{1}", Validate(blogName), methodName), oAuthToken, httpMethod, parameters)
 		{
 			if (blogName == null)
-				throw new ArgumentNullException("blogName");
+				throw new ArgumentNullException(nameof(blogName));
 
 			if (blogName.Length == 0)
-				throw new ArgumentException("Blog name cannot be empty.", "blogName");
+				throw new ArgumentException("Blog name cannot be empty.", nameof(blogName));
 
 			if (methodName == null)
 				throw new ArgumentNullException("methodName");
 
 			if (methodName.Length == 0)
-				throw new ArgumentException("Method name cannot be empty.", "methodName");
+				throw new ArgumentException("Method name cannot be empty.", nameof(methodName));
 		}
 
-		private static string Validate(string blogName)
+		/// <summary>
+		/// Validates the specified blog name and formats it as a Tumblr URL if necessary.
+		/// </summary>
+		/// <param name="blogName">The name of the blog to validate. Cannot be <see langword="null"/> or empty.</param>
+		/// <returns>A string representing the blog name formatted as a Tumblr URL if it does not already contain a period.</returns>
+		/// <exception cref="ArgumentNullException">Thrown if <paramref name="blogName"/> is <see langword="null"/>.</exception>
+		/// <exception cref="ArgumentException">Thrown if <paramref name="blogName"/> is an empty string.</exception>
+		public static string Validate(string blogName)
 		{
-			if (String.IsNullOrEmpty(blogName))
-				return blogName;
+            if (blogName == null)
+            {
+                throw new ArgumentNullException(nameof(blogName));
+            }
+
+            if (blogName.Length == 0)
+                throw new ArgumentException("Blog name cannot be empty.", nameof(blogName));
 
 			return (blogName.Contains(".")) ? blogName : String.Format("{0}.tumblr.com", blogName);
 		}

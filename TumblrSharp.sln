@@ -95,6 +95,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demo Daten", "Demo Daten", 
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ExampleShared", "Examples\ExampleShared\ExampleShared.shproj", "{4B0B35C7-251F-4952-AA70-D98F8B14CB95}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Block", "Examples\.NET\Console\Block\Block.csproj", "{896CB901-3B0B-4D4A-5576-6567B9A88764}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -591,6 +593,30 @@ Global
 		{D9F1D88F-F5AA-49F0-9DF6-AC5FC2440220}.Release|x64.Build.0 = Release|Any CPU
 		{D9F1D88F-F5AA-49F0-9DF6-AC5FC2440220}.Release|x86.ActiveCfg = Release|Any CPU
 		{D9F1D88F-F5AA-49F0-9DF6-AC5FC2440220}.Release|x86.Build.0 = Release|Any CPU
+		{896CB901-3B0B-4D4A-5576-6567B9A88764}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{896CB901-3B0B-4D4A-5576-6567B9A88764}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{896CB901-3B0B-4D4A-5576-6567B9A88764}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{896CB901-3B0B-4D4A-5576-6567B9A88764}.Debug|ARM.Build.0 = Debug|Any CPU
+		{896CB901-3B0B-4D4A-5576-6567B9A88764}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{896CB901-3B0B-4D4A-5576-6567B9A88764}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{896CB901-3B0B-4D4A-5576-6567B9A88764}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{896CB901-3B0B-4D4A-5576-6567B9A88764}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{896CB901-3B0B-4D4A-5576-6567B9A88764}.Debug|x64.ActiveCfg = Debug|x64
+		{896CB901-3B0B-4D4A-5576-6567B9A88764}.Debug|x64.Build.0 = Debug|x64
+		{896CB901-3B0B-4D4A-5576-6567B9A88764}.Debug|x86.ActiveCfg = Debug|x86
+		{896CB901-3B0B-4D4A-5576-6567B9A88764}.Debug|x86.Build.0 = Debug|x86
+		{896CB901-3B0B-4D4A-5576-6567B9A88764}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{896CB901-3B0B-4D4A-5576-6567B9A88764}.Release|Any CPU.Build.0 = Release|Any CPU
+		{896CB901-3B0B-4D4A-5576-6567B9A88764}.Release|ARM.ActiveCfg = Release|Any CPU
+		{896CB901-3B0B-4D4A-5576-6567B9A88764}.Release|ARM.Build.0 = Release|Any CPU
+		{896CB901-3B0B-4D4A-5576-6567B9A88764}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{896CB901-3B0B-4D4A-5576-6567B9A88764}.Release|iPhone.Build.0 = Release|Any CPU
+		{896CB901-3B0B-4D4A-5576-6567B9A88764}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{896CB901-3B0B-4D4A-5576-6567B9A88764}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{896CB901-3B0B-4D4A-5576-6567B9A88764}.Release|x64.ActiveCfg = Release|x64
+		{896CB901-3B0B-4D4A-5576-6567B9A88764}.Release|x64.Build.0 = Release|x64
+		{896CB901-3B0B-4D4A-5576-6567B9A88764}.Release|x86.ActiveCfg = Release|x86
+		{896CB901-3B0B-4D4A-5576-6567B9A88764}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -625,6 +651,7 @@ Global
 		{D9F1D88F-F5AA-49F0-9DF6-AC5FC2440220} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{02EA681E-C7D8-13C7-8484-4AC65E1B71E8} = {BAA06ECF-995E-4FDE-851E-1744454DE4D4}
 		{4B0B35C7-251F-4952-AA70-D98F8B14CB95} = {B103B48F-8100-4DD6-A00C-3CFFBA6A31BD}
+		{896CB901-3B0B-4D4A-5576-6567B9A88764} = {10B15083-017A-4F8A-9F45-A8BCBD43877B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {32217C45-3DBC-48F5-9517-D14CFF7F3504}
@@ -637,6 +664,7 @@ Global
 		Examples\ExampleShared\ExampleShared.projitems*{6ae11625-9920-4d7a-b1c2-3ea184ae50f4}*SharedItemsImports = 5
 		Examples\ExampleShared\ExampleShared.projitems*{6f9ae5dd-e526-4f41-a863-9287e3d548c6}*SharedItemsImports = 5
 		Examples\ExampleShared\ExampleShared.projitems*{782f1c59-5c1a-401f-9ca5-89edd80e37d9}*SharedItemsImports = 5
+		Examples\ExampleShared\ExampleShared.projitems*{896cb901-3b0b-4d4a-5576-6567b9a88764}*SharedItemsImports = 5
 		Examples\ExampleShared\ExampleShared.projitems*{8a8a9a18-ac15-4e3b-9a1c-0574fcf7dccc}*SharedItemsImports = 5
 		Examples\ExampleShared\ExampleShared.projitems*{96d0729b-0e25-44aa-a8fb-9cc1e300ea79}*SharedItemsImports = 5
 		Examples\ExampleShared\ExampleShared.projitems*{9ee1507d-c6ea-4d3d-88f6-e355611bf00c}*SharedItemsImports = 5

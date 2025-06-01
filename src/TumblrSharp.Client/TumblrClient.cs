@@ -78,6 +78,301 @@ namespace DontPanic.TumblrSharp.Client
 
         #region Blog Methods
 
+        #region Block
+
+        /// <summary>
+        /// Get the blogs that the requested blog is currently blocking
+        /// </summary>
+        /// <param name="blogName">name of the blog, you must be an admin </param>
+        /// <param name="startIndex">Block number to start at</param>
+        /// <param name="count">The number of blocks to retrieve, 1-20, inclusive</param>
+        /// <returns>a task of enumerable list of <see cref="BlogBase"/></returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="blogName"/> is <b>null</b>.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="blogName"/> is empty.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <list type="bullet">
+        /// <item>
+        ///		<description>
+        ///			<paramref name="startIndex"/> is less than 0.
+        ///		</description>
+        ///	</item>
+        ///	<item>
+        ///		<description>
+        ///			<paramref name="count"/> is less than 1 or greater than 20.
+        ///		</description>
+        ///	</item>
+        /// </list>
+        /// </exception>
+        /// <example>
+        /// This example lists all the names of the blogs that have been blocked.
+        /// <code>
+        ///     BlogBase[] blogs;
+        ///     
+        ///     do
+        ///     {
+        ///         blogs = await tumblrClient.GetBlog("NameOfYourBlog");
+        ///    
+        ///         foreach (var blog in blogs)
+        ///         {
+        ///             Console.WriteLine(blog.Name);
+        ///         }
+        ///     }
+        ///     while ( blogs.Length == 20 )
+        /// </code>
+        /// </example>
+        public Task<BlogBase[]> GetBlock(string blogName, int startIndex = 0, int count = 20)
+        {
+            if (blogName == null)
+                throw new ArgumentNullException(nameof(blogName));
+
+            if (blogName.Length == 0)
+                throw new ArgumentException("Blog name cannot be empty.", nameof(blogName));
+
+            if (startIndex < 0)
+                throw new ArgumentOutOfRangeException(nameof(startIndex), "startIndex must be greater or equal to zero.");
+
+            if (count < 1 || count > 20)
+                throw new ArgumentOutOfRangeException(nameof(count), "count must be between 1 and 20.");
+
+            MethodParameterSet parameters = new MethodParameterSet
+            {
+                { "offset", startIndex, 0 },
+                { "limit", count, 20 }
+            };
+
+            return CallApiMethodAsync<BlocksResponse, BlogBase[]>(
+              new BlogMethod(blogName, "blocks", OAuthToken, HttpMethod.Get, parameters),
+              r => r.Blogs,
+              CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Block a Blog.
+        /// Note that this endpoint is rate limited to 60 requests per minute.
+        /// </summary>
+        /// 
+        /// <param name="blogName">name of the blog, you must be an admin</param>
+        /// <param name="toBlockedBlogName">The tumblelog to block, specified by any blog identifier</param>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// <list type="bullet">
+        /// <item>
+        ///		<description>
+        ///			<paramref name="blogName"/> is <b>null</b>.
+        ///		</description>
+        ///	</item>
+        ///	<item>
+        ///		<description>
+        ///			<paramref name="toBlockedBlogName"/> may be null
+        ///		</description>
+        ///	</item>
+        /// </list>
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <list type="bullet">
+        ///	<item>
+        ///		<description>
+        ///         <paramref name="blogName"/> is empty.
+        ///     </description>
+        ///	</item>
+        ///	<item>
+        ///		<description>
+        ///			<paramref name="toBlockedBlogName"/> is empty
+        ///		</description>
+        ///	</item>
+        /// </list>
+        /// </exception>
+        /// 
+        /// <example>
+        ///     <code>
+        ///         string nameOfTheBlogToBolocked = "UnsolicitedBlog";
+        ///         
+        ///         try
+        ///         {
+        ///             await tumblrClient.SetBlock("NameOfYourBlog", nameOfTheBlogToBolocked);
+        ///         }
+        ///         except (TumblrException exp)
+        ///         {
+        ///             Console.WriteLine($"The operation could not be completed: {exp.msg}");
+        ///         }
+        ///         
+        ///         Console.WriteLine("Success");
+        ///     </code>
+        /// </example>
+        public Task SetBlock(string blogName, string toBlockedBlogName)
+        {
+            if (blogName == null)
+                throw new ArgumentNullException(nameof(blogName));
+
+            if (blogName.Length == 0)
+                throw new ArgumentException("Blog name cannot be empty", nameof(blogName));
+
+            if (toBlockedBlogName == null)
+            {
+                throw new ArgumentNullException(nameof(toBlockedBlogName), $"{nameof(toBlockedBlogName)} is null");
+            }
+
+            if (toBlockedBlogName.Length == 0)
+            {
+                throw new ArgumentException($"when {nameof(toBlockedBlogName)} is empty", nameof(toBlockedBlogName));
+            }
+
+            toBlockedBlogName = BlogMethod.Validate(toBlockedBlogName);
+
+            MethodParameterSet parameters = new MethodParameterSet
+            {
+                { "blocked_tumblelog", toBlockedBlogName, "" }
+            };
+
+            return CallApiMethodNoResultAsync(
+                    new BlogMethod(blogName, "blocks", OAuthToken, HttpMethod.Post, parameters),
+                    CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Block a Blog.
+        /// Note that this endpoint is rate limited to 60 requests per minute.
+        /// </summary>
+        /// 
+        /// <param name="blogName">name of the blog, you must be an admin</param>
+        /// <param name="postID">The anonymous post ID (asks, submissions) to block</param>
+        /// 
+        /// <exception cref="ArgumentNullException">
+        /// <list type="bullet">
+        /// <item>
+        ///		<description>
+        ///			<paramref name="blogName"/> is <b>null</b>.
+        ///		</description>
+        ///	</item>
+        /// </list>
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <list type="bullet">
+        ///	<item>
+        ///		<description>
+        ///         <paramref name="blogName"/> is empty.
+        ///     </description>
+        ///	</item>
+        ///	<item>
+        ///		<description>
+        ///			<paramref name="postID"/> must be greater as 0
+        ///		</description>
+        ///	</item>
+        /// </list>
+        /// </exception>
+        /// 
+        /// <example>
+        ///     <code>         
+        ///         try
+        ///         {
+        ///             await tumblrClient.SetBlock("NameOfYourBlog", 122563);
+        ///         }
+        ///         except (TumblrException exp)
+        ///         {
+        ///             Console.WriteLine($"The operation could not be completed: {exp.msg}");
+        ///         }
+        ///         
+        ///         Console.WriteLine("Success");
+        ///     </code>
+        /// </example>
+        public Task SetBlock(string blogName, long postID)
+        {
+            if (blogName == null)
+                throw new ArgumentNullException(nameof(blogName));
+
+            if (postID <= 0)
+            {
+                throw new ArgumentException($"{nameof(postID)} must be greater as 0", nameof(postID));
+            }
+
+            MethodParameterSet parameters = new MethodParameterSet
+            {
+                { "post_id", postID, 0 }
+            };
+
+            return CallApiMethodNoResultAsync(
+                    new BlogMethod(blogName, "blocks", OAuthToken, HttpMethod.Post, parameters),
+                    CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Remove blocks.
+        /// Note that this endpoint is rate limited to 60 requests per minute.
+        /// </summary>
+        /// <param name="blogName">name of the blog, you must be an admin</param>
+        /// <param name="blockedBlogName">The tumblelog whose block to remove, specified by any blog identifier. Is parameter null or empty, this will clear all anonymous IP blocks.</param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="blogName"/> is <b>null</b>.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="blogName"/> is empty.
+        /// </exception>
+        /// 
+        /// <example>
+        /// 
+        /// removes the block for the blog "UnsolicitedBlog"
+        /// 
+        ///     <code>
+        ///         string nameOfTheBlogToBolocked = "UnsolicitedBlog";
+        ///         
+        ///         try
+        ///         {
+        ///             await tumblrClient.RemoveBlock("YourBlog", nameOfTheBlogToBolocked);
+        ///         }
+        ///         except (Exception exp)
+        ///         {
+        ///             Console.WriteLine($"The operation could not be completed: {exp.msg}");
+        ///         }
+        ///         
+        ///         Console.WriteLine("Success");
+        ///     </code>
+        ///     
+        /// clear all anonymous IP blocks
+        /// 
+        ///     <code>
+        ///         try
+        ///         {
+        ///             await tumblrClient.RemoveBlock("NameOfYourBlog");
+        ///         }
+        ///         except (TumblrException exp)
+        ///         {
+        ///             Console.WriteLine($"The operation could not be completed: {exp.msg}");
+        ///         }
+        ///         
+        ///         Console.WriteLine("Success");
+        ///     </code>
+        /// </example>
+        public Task RemoveBlock(string blogName, string blockedBlogName = null)
+        {
+            if (blogName == null)
+                throw new ArgumentNullException(nameof(blogName));
+
+            if (blogName.Length == 0)
+                throw new ArgumentException("Blog name cannot be empty.", nameof(blogName));
+
+            blockedBlogName = BlogMethod.Validate(blockedBlogName);
+
+            MethodParameterSet parameters = new MethodParameterSet
+            {
+                { "blocked_tumblelog", blockedBlogName, "" }
+            };
+
+            if (string.IsNullOrEmpty(blockedBlogName))
+            {
+                parameters.Add("anonymous_only", true);
+            }
+
+            return CallApiMethodNoResultAsync(
+                    new BlogMethod(blogName, "blocks", OAuthToken, HttpMethod.Post, parameters),
+                    CancellationToken.None);
+        }
+
+        #endregion
+
         #region GetBlogInfoAsync
 
         /// <summary>
@@ -202,7 +497,7 @@ namespace DontPanic.TumblrSharp.Client
             if (count < 1 || count > 20)
                 throw new ArgumentOutOfRangeException("count", "count must be between 1 and 20.");
 
-            string methodName = null;
+            string methodName;
             switch (type)
             {
                 case PostType.Text: methodName = "posts/text"; break;
@@ -712,7 +1007,7 @@ namespace DontPanic.TumblrSharp.Client
 
             return CallApiMethodAsync<PostCreationInfo>(
               new BlogMethod(blogName, "post/edit", OAuthToken, HttpMethod.Post, parameters),
-              CancellationToken.None);
+              cancellationToken);
         }
 
         #endregion
