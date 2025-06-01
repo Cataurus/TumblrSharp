@@ -8,7 +8,7 @@ namespace FollowerBy
 {
     class Program
     {
-        static async System.Threading.Tasks.Task Main(string[] args)
+        static async System.Threading.Tasks.Task Main()
         {
             Console.WriteLine("FollowerBy Sample");
             Console.WriteLine("-----------------");

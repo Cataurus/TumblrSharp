@@ -7,7 +7,7 @@ namespace ExampleShared
 {
     public class TumblrBase
     {
-        protected TumblrClient client = null;
+        protected TumblrClient client;
 
         public TumblrBase()
         {
@@ -19,7 +19,7 @@ namespace ExampleShared
                 throw new Exception();
             }
 
-            var _ = this.client = new TumblrClientFactory().Create<TumblrClient>(Settings.CONSUMER_KEY, Settings.CONSUMER_SECRET, new Token(Settings.OAUTH_TOKEN_KEY, Settings.OAUTH_TOKEN_SECRET));
+            this.client = new TumblrClientFactory().Create<TumblrClient>(Settings.CONSUMER_KEY, Settings.CONSUMER_SECRET, new Token(Settings.OAUTH_TOKEN_KEY, Settings.OAUTH_TOKEN_SECRET));
         }
     }
 }

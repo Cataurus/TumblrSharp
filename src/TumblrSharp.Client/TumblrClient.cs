@@ -381,6 +381,7 @@ namespace DontPanic.TumblrSharp.Client
         /// <returns></returns>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="blogName"/> is null.
+        /// </exception>
         /// <exception cref="ArgumentException">
         /// <list type="bullet">
         ///	<item>

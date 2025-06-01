@@ -92,7 +92,7 @@ namespace Blocks
 
             try
             {
-                await tumblrClient.RemoveBlock(blogName, blockedBlog);
+                await tumblrClient.RemoveBlocks(blogName, blockedBlog);
 
                 Console.WriteLine("success");
             }
@@ -118,7 +118,7 @@ namespace Blocks
 
             try
             {
-                await tumblrClient.SetBlock(blogName, blogNameToBlock);
+                await tumblrClient.SetBlocks(blogName, blogNameToBlock);
 
                 Console.WriteLine("success");
             }
@@ -136,7 +136,7 @@ namespace Blocks
             Console.WriteLine("---------------------");
             Console.WriteLine("");
 
-            var blockBlogs = await tumblrClient.GetBlock(blogName).ConfigureAwait(true);
+            var blockBlogs = await tumblrClient.GetBlocks(blogName).ConfigureAwait(true);
 
             if (blockBlogs.Length == 0)
             {

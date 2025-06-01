@@ -10,7 +10,7 @@ namespace FilteredContent
 {
     class Program
     {
-        static async Task Main(string[] args)
+        static async Task Main()
         {
             Console.WriteLine("Filtered Content Sample");
             Console.WriteLine("-----------------------");
@@ -92,7 +92,7 @@ namespace FilteredContent
             Console.WriteLine("add a List of filter:");
             Console.WriteLine("*********************");
 
-            List<string> filteredContentsToSet = new();
+            List<string> filteredContentsToSet = [];
 
             while (true)
             {

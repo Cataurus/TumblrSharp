@@ -8,10 +8,20 @@ namespace CreateTextPost
 {
     public class Tumblr : TumblrBase
     {
+        public async Task<string> FirstBlog()
+        {
+            var user = await client.GetUserInfoAsync();
+            if (user.Blogs.Length == 0)
+            {
+                throw new Exception("No blogs found for this user.");
+            }
+            return user.Blogs[0].Name;
+        }
+
         public async Task<PostCreationInfo> Post(string text)
         {
             //replace blogName with your blogname
-            string blogName = "Your blogName";
+            string blogName = await FirstBlog();
 
             var test = await client.CreatePostAsync(blogName, PostData.CreateText(text));
 
