@@ -4,13 +4,12 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
 	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-	<Platforms>AnyCPU;x64</Platforms>
+	<Platforms>x64;x86;ARM64</Platforms>
 	<OutputPath>bin\$(Configuration)\$(Platform)\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\src\TumblrSharp.Client\TumblrSharp.Client.csproj" />
-    <ProjectReference Include="..\..\..\..\src\TumblrSharp\TumblrSharp.csproj" />
   </ItemGroup>
 
   <Import Project="..\..\..\ExampleShared\ExampleShared.projitems" Label="Shared" />

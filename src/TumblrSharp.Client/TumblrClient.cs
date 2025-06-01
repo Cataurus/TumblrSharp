@@ -37,7 +37,7 @@ namespace DontPanic.TumblrSharp.Client
         ///  You can get a consumer key and a consumer secret by registering an application with Tumblr:<br/>
         /// <br/>
         /// http://www.tumblr.com/oauth/apps
-        /// <br/><br/>platform: .Net Standard 1.1+, .Net Core 2.2+
+        /// <br/><br/>platform: .Net Standard 2.0, .Net Core 2.2+
         /// </remarks>
         public TumblrClient(IHmacSha1HashProvider hashProvider, string consumerKey, string consumerSecret, Token oAuthToken = null) : base(hashProvider, consumerKey, consumerSecret, oAuthToken)
         {
@@ -1358,6 +1358,105 @@ namespace DontPanic.TumblrSharp.Client
             return CallApiMethodAsync<PostCollection, BasePost[]>(
               new BlogMethod(blogName, "posts/submission", OAuthToken, HttpMethod.Get, parameters),
               r => r.Posts,
+              CancellationToken.None);
+        }
+
+        #endregion
+
+        #region GetNotifications
+
+
+        /// <summary>
+        /// Retrieve the activity items for a specific blog, in reverse chronological order.
+        /// </summary>
+        /// 
+        /// <param name="blogName">The name of the blog.</param>
+        /// <param name="before">Unix epoch timestamp that begins the page, defaults to request time.</param>
+        /// <param name="notificationsTypes">one or more types to filter by</param>
+        /// 
+        /// <returns> A task that provides an enumeration of <see cref="Notification"/></returns>
+        /// 
+        /// <exception cref="ArgumentNullException" >
+        /// <list type="bullet">
+        /// <item>
+        ///     <description>
+        ///         <paramref name="blogName">name of the blog is null</paramref>
+        ///     </description>
+        /// </item>
+        /// <item>
+        ///     <description>
+        ///         <paramref name="before">the date is null</paramref>
+        ///     </description>
+        /// </item>
+        /// </list>
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        ///     <paramref name="blogName">the name of blog is empty</paramref>
+        /// </exception>
+        public Task<Notification[]> GetNotifications(string blogName, DateTime before, NotificationsTypes notificationsTypes = NotificationsTypes.All)
+        {
+            if (blogName == null)
+                throw new ArgumentNullException(nameof(blogName));
+
+            if (blogName.Length == 0)
+                throw new ArgumentException(nameof(blogName));
+
+            MethodParameterSet parameters = new MethodParameterSet
+            {
+                { "before", new DateTimeOffset(before).ToUnixTimeSeconds(), 0 }
+            };
+
+            if (notificationsTypes != NotificationsTypes.All)
+            {
+                string[] arrayOfNotificationsTypes = notificationsTypes.ToTumblrStringArray();
+
+                for (int i = 0; i < arrayOfNotificationsTypes.Length; i++)
+                {
+                    parameters.Add($"types[{i}]", arrayOfNotificationsTypes[i], "");
+                }
+            }
+
+            return CallApiMethodAsync<NotificationsResponse, Notification[]>(
+              new BlogMethod(blogName, "notifications", OAuthToken, HttpMethod.Get, parameters),
+              r => r.Notifications,
+              CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Retrieve the activity items for a specific blog, in reverse chronological order.
+        /// </summary>
+        /// <param name="blogName">The name of the blog.</param>
+        /// <param name="notificationsTypes">one or more types to filter by</param>
+        /// <returns>A task that provides an enumeration of <see cref="Notification"/></returns>
+        /// <exception cref="ArgumentNullException" >
+        ///     <paramref name="blogName">name of the blog is null</paramref>
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        ///     <paramref name="blogName">the name of blog is empty</paramref>
+        /// </exception>
+        public Task<Notification[]> GetNotifications(string blogName, NotificationsTypes notificationsTypes = NotificationsTypes.All)
+        {
+            if (blogName == null)
+                throw new ArgumentNullException(nameof(blogName));
+
+            if (blogName.Length == 0)
+                throw new ArgumentException(nameof(blogName));
+
+            MethodParameterSet parameters = new MethodParameterSet();
+
+            if (notificationsTypes != NotificationsTypes.All)
+            {
+                string[] arrayOfNotificationsTypes = notificationsTypes.ToTumblrStringArray();
+
+                for (int i = 0; i < arrayOfNotificationsTypes.Length; i++)
+                {
+                    parameters.Add($"types[{i}]", arrayOfNotificationsTypes[i], "");
+                }
+            }
+
+            return CallApiMethodAsync<NotificationsResponse, Notification[]>(
+              new BlogMethod(blogName, "notifications", OAuthToken, HttpMethod.Get, parameters),
+              r => r.Notifications,
               CancellationToken.None);
         }
 
