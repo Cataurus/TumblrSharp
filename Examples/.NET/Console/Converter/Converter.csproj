@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\src\TumblrSharp.Client\TumblrSharp.Client.csproj" />
-    <ProjectReference Include="..\..\..\..\src\TumblrSharp\TumblrSharp.csproj" />
   </ItemGroup>
 
   <Import Project="..\..\..\ExampleShared\ExampleShared.projitems" Label="Shared" />

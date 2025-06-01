@@ -101,6 +101,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notifications", "Examples\.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FollowerBy", "Examples\.NET\Console\FollowerBy\FollowerBy.csproj", "{1B176DCB-2F6A-0F63-DC03-F7AE16A27557}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserLimits", "Examples\.NET\Console\UserLimits\UserLimits.csproj", "{E890D910-DF66-6549-733D-101152B02A38}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -669,6 +671,30 @@ Global
 		{1B176DCB-2F6A-0F63-DC03-F7AE16A27557}.Release|x64.Build.0 = Release|x64
 		{1B176DCB-2F6A-0F63-DC03-F7AE16A27557}.Release|x86.ActiveCfg = Release|x86
 		{1B176DCB-2F6A-0F63-DC03-F7AE16A27557}.Release|x86.Build.0 = Release|x86
+		{E890D910-DF66-6549-733D-101152B02A38}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{E890D910-DF66-6549-733D-101152B02A38}.Debug|Any CPU.Build.0 = Debug|x64
+		{E890D910-DF66-6549-733D-101152B02A38}.Debug|ARM.ActiveCfg = Debug|x64
+		{E890D910-DF66-6549-733D-101152B02A38}.Debug|ARM.Build.0 = Debug|x64
+		{E890D910-DF66-6549-733D-101152B02A38}.Debug|iPhone.ActiveCfg = Debug|x64
+		{E890D910-DF66-6549-733D-101152B02A38}.Debug|iPhone.Build.0 = Debug|x64
+		{E890D910-DF66-6549-733D-101152B02A38}.Debug|iPhoneSimulator.ActiveCfg = Debug|x64
+		{E890D910-DF66-6549-733D-101152B02A38}.Debug|iPhoneSimulator.Build.0 = Debug|x64
+		{E890D910-DF66-6549-733D-101152B02A38}.Debug|x64.ActiveCfg = Debug|x64
+		{E890D910-DF66-6549-733D-101152B02A38}.Debug|x64.Build.0 = Debug|x64
+		{E890D910-DF66-6549-733D-101152B02A38}.Debug|x86.ActiveCfg = Debug|x64
+		{E890D910-DF66-6549-733D-101152B02A38}.Debug|x86.Build.0 = Debug|x64
+		{E890D910-DF66-6549-733D-101152B02A38}.Release|Any CPU.ActiveCfg = Release|x64
+		{E890D910-DF66-6549-733D-101152B02A38}.Release|Any CPU.Build.0 = Release|x64
+		{E890D910-DF66-6549-733D-101152B02A38}.Release|ARM.ActiveCfg = Release|x64
+		{E890D910-DF66-6549-733D-101152B02A38}.Release|ARM.Build.0 = Release|x64
+		{E890D910-DF66-6549-733D-101152B02A38}.Release|iPhone.ActiveCfg = Release|x64
+		{E890D910-DF66-6549-733D-101152B02A38}.Release|iPhone.Build.0 = Release|x64
+		{E890D910-DF66-6549-733D-101152B02A38}.Release|iPhoneSimulator.ActiveCfg = Release|x64
+		{E890D910-DF66-6549-733D-101152B02A38}.Release|iPhoneSimulator.Build.0 = Release|x64
+		{E890D910-DF66-6549-733D-101152B02A38}.Release|x64.ActiveCfg = Release|x64
+		{E890D910-DF66-6549-733D-101152B02A38}.Release|x64.Build.0 = Release|x64
+		{E890D910-DF66-6549-733D-101152B02A38}.Release|x86.ActiveCfg = Release|x64
+		{E890D910-DF66-6549-733D-101152B02A38}.Release|x86.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -706,6 +732,7 @@ Global
 		{AE083CC3-9BA3-D536-AFA8-0515BAA71649} = {10B15083-017A-4F8A-9F45-A8BCBD43877B}
 		{833324AE-7097-1961-40C5-7DE7F737B572} = {10B15083-017A-4F8A-9F45-A8BCBD43877B}
 		{1B176DCB-2F6A-0F63-DC03-F7AE16A27557} = {10B15083-017A-4F8A-9F45-A8BCBD43877B}
+		{E890D910-DF66-6549-733D-101152B02A38} = {10B15083-017A-4F8A-9F45-A8BCBD43877B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {32217C45-3DBC-48F5-9517-D14CFF7F3504}
@@ -726,5 +753,6 @@ Global
 		Examples\ExampleShared\ExampleShared.projitems*{ae083cc3-9ba3-d536-afa8-0515baa71649}*SharedItemsImports = 5
 		Examples\ExampleShared\ExampleShared.projitems*{b6cf5ba6-b7c1-413e-a023-418255ed1dee}*SharedItemsImports = 5
 		Examples\ExampleShared\ExampleShared.projitems*{c23c68e5-66be-4e42-9184-d49a5c8326b8}*SharedItemsImports = 5
+		Examples\ExampleShared\ExampleShared.projitems*{e890d910-df66-6549-733d-101152b02a38}*SharedItemsImports = 5
 	EndGlobalSection
 EndGlobal

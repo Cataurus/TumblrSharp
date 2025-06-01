@@ -504,6 +504,8 @@ namespace DontPanic.TumblrSharp.Client
 
         #endregion
 
+        #region Posts
+
         #region GetPostsAsync
 
         /// <summary>
@@ -674,52 +676,40 @@ namespace DontPanic.TumblrSharp.Client
 
         #endregion
 
-        #region GetFollowersAsync
+        #region DeletePostAsync
 
         /// <summary>
-        /// Asynchronously retrieves a blog's followers.
+        /// Asynchronously deletes a post.
         /// </summary>
         /// <remarks>
-        /// See: http://www.tumblr.com/docs/en/api/v2#blog-followers
+        /// See: http://www.tumblr.com/docs/en/api/v2#deleting-posts
         /// </remarks>
         /// <param name="blogName">
-        /// The name of the blog.
+        /// The name of the blog to which the post to delete belongs.
         /// </param>
-        /// <param name="startIndex">
-        /// The offset at which to start retrieving the followers. Use 0 to start retrieving from the latest follower.
-        /// </param>
-        /// <param name="count">
-        /// The number of followers to retrieve. Must be between 1 and 20.
+        /// <param name="postId">
+        /// The identifier of the post to delete.
         /// </param>
         /// <returns>
-        ///  A <see cref="Task{Followers}"/> that can be used to track the operation. If the task succeeds, the <see cref="Task{Followers}.Result"/> will
-        /// carry a <see cref="Followers"/> instance. Otherwise <see cref="Task.Exception"/> will carry a <see cref="TumblrException"/>
-        /// A <see cref="Followers"/> instance.
+        /// A <see cref="Task"/> that can be used to track the operation. If the task fails, <see cref="Exception"/> 
+        /// will carry a <see cref="TumblrException"/> representing the error occurred during the call.
         /// </returns>
         /// <exception cref="ObjectDisposedException">
         /// The object has been disposed.
         /// </exception>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="blogName"/> is <b>null</b>.
-        /// </exception>
+        ///	</exception>
         /// <exception cref="ArgumentException">
         /// <paramref name="blogName"/> is empty.
+        ///	</exception>
+        ///	<exception cref="System.ArgumentOutOfRangeException">
+        ///	<paramref name="postId"/> is less than 0.
         /// </exception>
-        /// <exception cref="System.ArgumentOutOfRangeException">
-        /// <list type="bullet">
-        /// <item>
-        ///		<description>
-        ///			<paramref name="startIndex"/> is less than 0.
-        ///		</description>
-        ///	</item>
-        ///	<item>
-        ///		<description>
-        ///			<paramref name="count"/> is less than 1 or greater than 20.
-        ///		</description>
-        ///	</item>
-        /// </list>
+        /// <exception cref="InvalidOperationException">
+        /// This <see cref="TumblrClient"/> instance does not have an OAuth token specified.
         /// </exception>
-        public Task<Followers> GetFollowersAsync(string blogName, int startIndex = 0, int count = 20)
+        public Task DeletePostAsync(string blogName, long postId)
         {
             if (disposed)
                 throw new ObjectDisposedException("TumblrClient");
@@ -730,86 +720,18 @@ namespace DontPanic.TumblrSharp.Client
             if (blogName.Length == 0)
                 throw new ArgumentException("Blog name cannot be empty.", "blogName");
 
-            if (startIndex < 0)
-                throw new ArgumentOutOfRangeException("startIndex", "startIndex must be greater or equal to zero.");
-
-            if (count < 1 || count > 20)
-                throw new ArgumentOutOfRangeException("count", "count must be between 1 and 20.");
+            if (postId < 0)
+                throw new ArgumentOutOfRangeException("postId", "Post ID must be greater or equal to zero.");
 
             if (OAuthToken == null)
-                throw new InvalidOperationException("GetFollowersAsync method requires an OAuth token to be specified.");
+                throw new InvalidOperationException("DeletePostAsync method requires an OAuth token to be specified.");
 
             MethodParameterSet parameters = new MethodParameterSet();
-            parameters.Add("offset", startIndex, 0);
-            parameters.Add("limit", count, 0);
+            parameters.Add("id", postId);
 
-            return CallApiMethodAsync<Followers>(
-              new BlogMethod(blogName, "followers", OAuthToken, HttpMethod.Get, parameters),
+            return CallApiMethodNoResultAsync(
+              new BlogMethod(blogName, "post/delete", OAuthToken, HttpMethod.Post, parameters),
               CancellationToken.None);
-        }
-
-        #endregion
-
-        #region GetFollowedByAsync
-
-        /// <summary>
-        /// This method can be used to check if one of your blogs is followed by another blog.
-        /// </summary>
-        /// <param name="blogName">name of your blog</param>
-        /// <param name="query">The name of the blog that may be following your blog</param>
-        /// <returns>True when the queried blog follows your blog, false otherwise.</returns>
-        /// <exception cref="System.ArgumentNullException">
-        /// <list type="bullet">
-        /// <item>
-        ///		<description>
-        ///			<paramref name="blogName"/> cannot be null.
-        ///		</description>
-        ///	</item>
-        ///	<item>
-        ///		<description>
-        ///			<paramref name="query"/> cannot be null.
-        ///		</description>
-        ///	</item>
-        /// </list>
-        /// </exception>
-        /// <exception cref="System.ArgumentException">
-        /// <list type="bullet">
-        /// <item>
-        ///		<description>
-        ///			<paramref name="blogName"/> cannot be empty.
-        ///		</description>
-        ///	</item>
-        ///	<item>
-        ///		<description>
-        ///			<paramref name="query"/> cannot be empty.
-        ///		</description>
-        ///	</item>
-        /// </list>
-        /// </exception>
-        public async Task<bool> GetFollowedByAsync(string blogName, string query)
-        {
-            if (blogName == null)
-                throw new ArgumentNullException(nameof(blogName));
-
-            if (blogName.Length == 0)
-                throw new ArgumentException("Blog name cannot be empty.", nameof(blogName));
-
-            if (query == null)
-                throw new ArgumentNullException(nameof(query));
-
-            if (query.Length == 0)
-                throw new ArgumentException("Query cannot be empty.", nameof(query));
-
-            MethodParameterSet parameters = new MethodParameterSet
-            {
-                {"query", query}
-            };
-
-            var result = await CallApiMethodAsync<FollowerBy>(
-              new BlogMethod(blogName, "followed_by", OAuthToken, HttpMethod.Get, parameters),
-              CancellationToken.None, null);
-
-            return result.IsFollower;
         }
 
         #endregion
@@ -1073,6 +995,148 @@ namespace DontPanic.TumblrSharp.Client
             return CallApiMethodAsync<PostCreationInfo>(
               new BlogMethod(blogName, "post/edit", OAuthToken, HttpMethod.Post, parameters),
               cancellationToken);
+        }
+
+        #endregion
+
+        #endregion
+
+        #region GetFollowersAsync
+
+        /// <summary>
+        /// Asynchronously retrieves a blog's followers.
+        /// </summary>
+        /// <remarks>
+        /// See: http://www.tumblr.com/docs/en/api/v2#blog-followers
+        /// </remarks>
+        /// <param name="blogName">
+        /// The name of the blog.
+        /// </param>
+        /// <param name="startIndex">
+        /// The offset at which to start retrieving the followers. Use 0 to start retrieving from the latest follower.
+        /// </param>
+        /// <param name="count">
+        /// The number of followers to retrieve. Must be between 1 and 20.
+        /// </param>
+        /// <returns>
+        ///  A <see cref="Task{Followers}"/> that can be used to track the operation. If the task succeeds, the <see cref="Task{Followers}.Result"/> will
+        /// carry a <see cref="Followers"/> instance. Otherwise <see cref="Task.Exception"/> will carry a <see cref="TumblrException"/>
+        /// A <see cref="Followers"/> instance.
+        /// </returns>
+        /// <exception cref="ObjectDisposedException">
+        /// The object has been disposed.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="blogName"/> is <b>null</b>.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="blogName"/> is empty.
+        /// </exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">
+        /// <list type="bullet">
+        /// <item>
+        ///		<description>
+        ///			<paramref name="startIndex"/> is less than 0.
+        ///		</description>
+        ///	</item>
+        ///	<item>
+        ///		<description>
+        ///			<paramref name="count"/> is less than 1 or greater than 20.
+        ///		</description>
+        ///	</item>
+        /// </list>
+        /// </exception>
+        public Task<Followers> GetFollowersAsync(string blogName, int startIndex = 0, int count = 20)
+        {
+            if (disposed)
+                throw new ObjectDisposedException("TumblrClient");
+
+            if (blogName == null)
+                throw new ArgumentNullException("blogName");
+
+            if (blogName.Length == 0)
+                throw new ArgumentException("Blog name cannot be empty.", "blogName");
+
+            if (startIndex < 0)
+                throw new ArgumentOutOfRangeException("startIndex", "startIndex must be greater or equal to zero.");
+
+            if (count < 1 || count > 20)
+                throw new ArgumentOutOfRangeException("count", "count must be between 1 and 20.");
+
+            if (OAuthToken == null)
+                throw new InvalidOperationException("GetFollowersAsync method requires an OAuth token to be specified.");
+
+            MethodParameterSet parameters = new MethodParameterSet();
+            parameters.Add("offset", startIndex, 0);
+            parameters.Add("limit", count, 0);
+
+            return CallApiMethodAsync<Followers>(
+              new BlogMethod(blogName, "followers", OAuthToken, HttpMethod.Get, parameters),
+              CancellationToken.None);
+        }
+
+        #endregion
+
+        #region GetFollowedByAsync
+
+        /// <summary>
+        /// This method can be used to check if one of your blogs is followed by another blog.
+        /// </summary>
+        /// <param name="blogName">name of your blog</param>
+        /// <param name="query">The name of the blog that may be following your blog</param>
+        /// <returns>True when the queried blog follows your blog, false otherwise.</returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// <list type="bullet">
+        /// <item>
+        ///		<description>
+        ///			<paramref name="blogName"/> cannot be null.
+        ///		</description>
+        ///	</item>
+        ///	<item>
+        ///		<description>
+        ///			<paramref name="query"/> cannot be null.
+        ///		</description>
+        ///	</item>
+        /// </list>
+        /// </exception>
+        /// <exception cref="System.ArgumentException">
+        /// <list type="bullet">
+        /// <item>
+        ///		<description>
+        ///			<paramref name="blogName"/> cannot be empty.
+        ///		</description>
+        ///	</item>
+        ///	<item>
+        ///		<description>
+        ///			<paramref name="query"/> cannot be empty.
+        ///		</description>
+        ///	</item>
+        /// </list>
+        /// </exception>
+        public async Task<bool> GetFollowedByAsync(string blogName, string query)
+        {
+            if (blogName == null)
+                throw new ArgumentNullException(nameof(blogName));
+
+            if (blogName.Length == 0)
+                throw new ArgumentException("Blog name cannot be empty.", nameof(blogName));
+
+            if (query == null)
+                throw new ArgumentNullException(nameof(query));
+
+            if (query.Length == 0)
+                throw new ArgumentException("Query cannot be empty.", nameof(query));
+
+            MethodParameterSet parameters = new MethodParameterSet
+            {
+                {"query", query}
+            };
+
+            var result = await CallApiMethodAsync<FollowerBy>(
+              new BlogMethod(blogName, "followed_by", OAuthToken, HttpMethod.Get, parameters),
+              CancellationToken.None, null);
+
+            return result.IsFollower;
         }
 
         #endregion
@@ -1521,66 +1585,6 @@ namespace DontPanic.TumblrSharp.Client
             return CallApiMethodAsync<NotificationsResponse, Notification[]>(
               new BlogMethod(blogName, "notifications", OAuthToken, HttpMethod.Get, parameters),
               r => r.Notifications,
-              CancellationToken.None);
-        }
-
-        #endregion
-
-        #region DeletePostAsync
-
-        /// <summary>
-        /// Asynchronously deletes a post.
-        /// </summary>
-        /// <remarks>
-        /// See: http://www.tumblr.com/docs/en/api/v2#deleting-posts
-        /// </remarks>
-        /// <param name="blogName">
-        /// The name of the blog to which the post to delete belongs.
-        /// </param>
-        /// <param name="postId">
-        /// The identifier of the post to delete.
-        /// </param>
-        /// <returns>
-        /// A <see cref="Task"/> that can be used to track the operation. If the task fails, <see cref="Exception"/> 
-        /// will carry a <see cref="TumblrException"/> representing the error occurred during the call.
-        /// </returns>
-        /// <exception cref="ObjectDisposedException">
-        /// The object has been disposed.
-        /// </exception>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="blogName"/> is <b>null</b>.
-        ///	</exception>
-        /// <exception cref="ArgumentException">
-        /// <paramref name="blogName"/> is empty.
-        ///	</exception>
-        ///	<exception cref="System.ArgumentOutOfRangeException">
-        ///	<paramref name="postId"/> is less than 0.
-        /// </exception>
-        /// <exception cref="InvalidOperationException">
-        /// This <see cref="TumblrClient"/> instance does not have an OAuth token specified.
-        /// </exception>
-        public Task DeletePostAsync(string blogName, long postId)
-        {
-            if (disposed)
-                throw new ObjectDisposedException("TumblrClient");
-
-            if (blogName == null)
-                throw new ArgumentNullException("blogName");
-
-            if (blogName.Length == 0)
-                throw new ArgumentException("Blog name cannot be empty.", "blogName");
-
-            if (postId < 0)
-                throw new ArgumentOutOfRangeException("postId", "Post ID must be greater or equal to zero.");
-
-            if (OAuthToken == null)
-                throw new InvalidOperationException("DeletePostAsync method requires an OAuth token to be specified.");
-
-            MethodParameterSet parameters = new MethodParameterSet();
-            parameters.Add("id", postId);
-
-            return CallApiMethodNoResultAsync(
-              new BlogMethod(blogName, "post/delete", OAuthToken, HttpMethod.Post, parameters),
               CancellationToken.None);
         }
 
@@ -2524,6 +2528,30 @@ namespace DontPanic.TumblrSharp.Client
         }
 
         #endregion
+
+        #region GetUserLimitsAsync
+
+        /// <summary>
+        /// Use this method to retrieve information about the various limits for the current user.
+        /// </summary>
+        /// <returns>A <see cref="Task"/> retrieve a <see cref="UserLimits"/> object</returns>
+        /// <exception cref="ObjectDisposedException"></exception>
+        public Task<UserLimits> GetUserLimitsAsync()
+        {
+            if (disposed)
+                throw new ObjectDisposedException("TumblrClient");
+
+            MethodParameterSet parameters = new MethodParameterSet();
+
+            return CallApiMethodAsync<UserLimitsRawResponse, UserLimits>(
+                new UserMethod("limits", OAuthToken, HttpMethod.Get, parameters),
+                x => x.User,
+                CancellationToken.None
+                );
+        }
+
+        #endregion
+
 
         #endregion
 
