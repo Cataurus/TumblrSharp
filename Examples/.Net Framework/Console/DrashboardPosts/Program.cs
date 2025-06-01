@@ -1,11 +1,8 @@
-﻿using ConsoleBasics;
-using DontPanic.TumblrSharp;
+﻿using DontPanic.TumblrSharp;
 using DontPanic.TumblrSharp.Client;
-using DontPanic.TumblrSharp.OAuth;
+using ExampleShared;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DashboardPosts
@@ -31,7 +28,7 @@ namespace DashboardPosts
 
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             Tumblr tumblr = new Tumblr();
 
@@ -45,12 +42,12 @@ namespace DashboardPosts
 
                 foreach (var basePost in basePosts)
                 {
-                    Console.WriteLine($"{k.ToString()}. Post from {basePost.BlogName} with ID {basePost.Id.ToString()}");
+                    Console.WriteLine($"{k}. Post from {basePost.BlogName} with ID {basePost.Id}");
 
                     if (basePost.Trails.Count() > 0)
                     {
                         Console.WriteLine();
-                        Console.WriteLine($"--- Post has {basePost.Trails.Count().ToString()} trail ---");
+                        Console.WriteLine($"--- Post has {basePost.Trails.Count()} trail ---");
                         Console.WriteLine();
                     }
 
@@ -68,7 +65,7 @@ namespace DashboardPosts
                     if (basePost.Notes?.Count() > 0)
                     {
                         Console.WriteLine();
-                        Console.WriteLine($"--- Post has {basePost.Notes.Count().ToString()} Notes ---");
+                        Console.WriteLine($"--- Post has {basePost.Notes.Count()} Notes ---");
                         Console.WriteLine();
 
                         foreach (var note in basePost.Notes)

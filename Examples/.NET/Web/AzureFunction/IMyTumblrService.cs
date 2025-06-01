@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace AzureTest
+namespace AzureFunction
 {
     public interface IMyTumblrService
     {

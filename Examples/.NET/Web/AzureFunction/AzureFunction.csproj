@@ -21,7 +21,5 @@
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\..\..\BasicAssemblyInfo.cs" />
-  </ItemGroup>
+  <Import Project="..\..\..\ExampleShared\ExampleShared.projitems" Label="Shared" />
 </Project>

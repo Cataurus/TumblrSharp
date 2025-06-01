@@ -1,15 +1,11 @@
 ﻿using Microsoft.Azure.Functions.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using DontPanic.TumblrSharp.Client;
-using DontPanic.TumblrSharp;
 using Microsoft.Extensions.DependencyInjection;
-using System.Reflection.Metadata.Ecma335;
+using AzureFunction;
 
-[assembly: FunctionsStartup(typeof(AzureTest.StartUp))]
+[assembly: FunctionsStartup(typeof(StartUp))]
 
-namespace AzureTest
+namespace AzureFunction
 {
     public class StartUp : FunctionsStartup
     {

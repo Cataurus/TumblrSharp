@@ -1,4 +1,5 @@
 using DontPanic.TumblrSharp.Client;
+using ExampleShared;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -31,7 +32,10 @@ namespace ASPNet
                 {
                     if (Settings.CONSUMER_KEY == "xxx")
                     {
-                        await subcontext.Response.WriteAsync("<h1>Examples for Asp.Net</h1><p>You must set the consumer token and the access token in the source code. Restart the project.</p>");
+                        var messageText = 
+                              "<h1>Examples for Asp.Net</h1>"
+                            + "<p>You must set the consumer token and the access token in the source code or better as environment variable. Restart the project.</p>";
+                        await subcontext.Response.WriteAsync(messageText);
                     }
                     else
                     {

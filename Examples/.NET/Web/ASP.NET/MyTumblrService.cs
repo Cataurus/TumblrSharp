@@ -1,6 +1,7 @@
 ﻿using DontPanic.TumblrSharp;
 using DontPanic.TumblrSharp.Client;
 using DontPanic.TumblrSharp.OAuth;
+using ExampleShared;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -20,7 +21,7 @@ namespace ASPNet
         /// <param name="clientFactory">IHttpClientFactory to create internal HttpClient</param>
         public MyTumblrService(IHttpClientFactory clientFactory)
         {
-            Token accessToken = new(Settings.OAUTH_TOKEN, Settings.OAUTH_TOKEN_SECRET);
+            Token accessToken = new(Settings.OAUTH_TOKEN_KEY, Settings.OAUTH_TOKEN_SECRET);
 
             _tc = new TumblrClientFactory().Create<TumblrClient>(clientFactory, Settings.CONSUMER_KEY, Settings.CONSUMER_SECRET, accessToken);
         }

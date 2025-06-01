@@ -11,8 +11,6 @@
     <ProjectReference Include="..\..\..\..\src\TumblrSharp\TumblrSharp.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Include="..\..\..\BasicAssemblyInfo.cs" />
-  </ItemGroup>
+  <Import Project="..\..\..\ExampleShared\ExampleShared.projitems" Label="Shared" />
 
 </Project>

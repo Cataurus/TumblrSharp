@@ -1,9 +1,8 @@
 ﻿using DontPanic.TumblrSharp;
-using DontPanic.TumblrSharp.OAuth;
 using DontPanic.TumblrSharp.Client;
+using ExampleShared;
 using System;
 using System.Threading.Tasks;
-using ConsoleBasics;
 
 namespace CreateTextPost
 {

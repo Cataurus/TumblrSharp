@@ -1,25 +1,31 @@
 ﻿using DontPanic.TumblrSharp;
 using DontPanic.TumblrSharp.Client;
 using DontPanic.TumblrSharp.OAuth;
+using ExampleShared;
 using System;
 
 namespace Followers
 {
     class Program
     {
-        // your consumer- and accessToken 
-        private static string CONSUMER_KEY = "xxx";
-        private static string CONSUMER_SECRET = "xxx";
-        private static string OAUTH_TOKEN = "xxx";
-        private static string OAUTH_TOKEN_SECRET = "xxx";
-
         static void Main(string[] args)
         {
             Console.WriteLine("Follower sample!");
 
             // create TumblrClient
-            TumblrClient tumblrClient = new TumblrClientFactory().Create<TumblrClient>(CONSUMER_KEY, CONSUMER_SECRET, new Token(OAUTH_TOKEN, OAUTH_TOKEN_SECRET));
+            TumblrClient tumblrClient;
 
+            try
+            {
+                tumblrClient = new TumblrClientFactory().Create<TumblrClient>(Settings.CONSUMER_KEY, Settings.CONSUMER_SECRET, new Token(Settings.OAUTH_TOKEN_KEY, Settings.OAUTH_TOKEN_SECRET));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error creating TumblrClient: " + ex.Message);
+                
+                return;
+            }
+            
             // get your blogs
             var userInfo = tumblrClient.GetUserInfoAsync().GetAwaiter().GetResult();
 

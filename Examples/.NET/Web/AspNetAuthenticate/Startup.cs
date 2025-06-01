@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Primitives;
+using System;
 
 namespace AspNetAuthenticate
 {    
@@ -18,8 +19,8 @@ namespace AspNetAuthenticate
     {
         private OAuthClient oAuthClient;
 
-        private string CONSUMER_KEY = "xxx";
-        private string CONSUMER_SECRET = "xxx";
+        private readonly string CONSUMER_KEY = Environment.GetEnvironmentVariable("TUMBLR_CONSUMER_KEY") ?? "***";
+        private readonly string CONSUMER_SECRET = Environment.GetEnvironmentVariable("TUMBLR_CONSUMER_SECRET") ?? "***";
 
         private Token accessToken;
         private Token requestToken;

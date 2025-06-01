@@ -1,11 +1,8 @@
-﻿using ConsoleBasics;
-using DontPanic.TumblrSharp;
-using DontPanic.TumblrSharp.Client;
-using DontPanic.TumblrSharp.OAuth;
+﻿using DontPanic.TumblrSharp.Client;
+using ExampleShared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DashboardPosts_After
@@ -46,7 +43,7 @@ namespace DashboardPosts_After
                             result.Add(item);
                         }
 
-                        k = k + 20;
+                        k += 20;
                     }
                 }
 
@@ -58,7 +55,7 @@ namespace DashboardPosts_After
 
         }
 
-        static void Main(string[] args)
+        static void Main()
         {
             Tumblr tumblr = new Tumblr();
 
@@ -73,7 +70,7 @@ namespace DashboardPosts_After
 
             foreach (var basePost in basePosts)
             {
-                Console.WriteLine($"Post from {basePost.BlogName} with ID {basePost.Id.ToString()}");
+                Console.WriteLine($"Post from {basePost.BlogName} with ID {basePost.Id}");
 
                 Console.WriteLine();
             }
@@ -96,7 +93,7 @@ namespace DashboardPosts_After
 
                 foreach (var basePost in basePosts)
                 {
-                    Console.WriteLine($"{k.ToString()}. Post from {basePost.BlogName} with ID {basePost.Id.ToString()}");
+                    Console.WriteLine($"{k}. Post from {basePost.BlogName} with ID {basePost.Id}");
 
                     Console.WriteLine();
 

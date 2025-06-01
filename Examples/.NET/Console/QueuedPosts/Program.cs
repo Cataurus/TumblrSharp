@@ -1,9 +1,9 @@
 ﻿using DontPanic.TumblrSharp;
 using DontPanic.TumblrSharp.Client;
 using DontPanic.TumblrSharp.OAuth;
+using ExampleShared;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace QueuedPosts
@@ -12,22 +12,17 @@ namespace QueuedPosts
     {
         private TumblrClient client = null;
 
-        private readonly string CONSUMER_KEY = "xxx";
-        private readonly string CONSUMER_SECRET = "xxx";
-        private readonly string OAUTH_TOKEN = "xxx";
-        private readonly string OAUTH_TOKEN_SECRET = "xxx";
-        
         public Tumblr()
         {
-            if (CONSUMER_KEY == "xxx")
+            if (Settings.CONSUMER_KEY == "***")
             {
-                Console.WriteLine("Change in sourcecode the consumerKey, etc...!");
+                Console.WriteLine("Change in sourcecode the consumerKey or better setting as environment variable, etc...!");
                 Console.WriteLine();
 
                 throw new Exception();
             }
 
-            this.client = new TumblrClientFactory().Create<TumblrClient>(CONSUMER_KEY, CONSUMER_SECRET, new Token(OAUTH_TOKEN, OAUTH_TOKEN_SECRET));
+            this.client = new TumblrClientFactory().Create<TumblrClient>(Settings.CONSUMER_KEY, Settings.CONSUMER_SECRET, new Token(Settings.OAUTH_TOKEN_KEY, Settings.OAUTH_TOKEN_SECRET));
         }
 
         public async Task<List<string>> GetBlog()

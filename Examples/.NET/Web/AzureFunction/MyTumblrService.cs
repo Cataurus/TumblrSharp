@@ -1,13 +1,12 @@
 ﻿using DontPanic.TumblrSharp;
 using DontPanic.TumblrSharp.Client;
 using DontPanic.TumblrSharp.OAuth;
-using System;
-using System.Collections.Generic;
+using ExampleShared;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AzureTest
+namespace AzureFunction
 {
     public class MyTumblrService : IMyTumblrService
     {
@@ -15,7 +14,7 @@ namespace AzureTest
 
         public MyTumblrService(IHttpClientFactory clientFactory)
         {
-            _tc = new TumblrClientFactory().Create<TumblrClient>(clientFactory, Settings.CONSUMER_KEY, Settings.CONSUMER_SECRET, new Token(Settings.OAUTH_TOKEN, Settings.OAUTH_TOKEN_SECRET));
+            _tc = new TumblrClientFactory().Create<TumblrClient>(clientFactory, Settings.CONSUMER_KEY, Settings.CONSUMER_SECRET, new Token(Settings.OAUTH_TOKEN_KEY, Settings.OAUTH_TOKEN_SECRET));
         }
 
         public async Task<string> GetUser()
