@@ -277,7 +277,7 @@ namespace DontPanic.TumblrSharp
 
 			//build the api call URL
 			StringBuilder apiRequestUrl = new StringBuilder(method.Url);
-			if (method.HttpMethod == HttpMethod.Get && method.Parameters.Count > 0)
+			if ( (method.HttpMethod == HttpMethod.Get || method.HttpMethod == HttpMethod.Delete) && (method.Parameters.Count > 0) )
 			{
 				//we are in a HTTP GET: add the request parameters to the query string
 				apiRequestUrl.Append("?");

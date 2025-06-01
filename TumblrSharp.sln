@@ -103,6 +103,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FollowerBy", "Examples\.NET
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserLimits", "Examples\.NET\Console\UserLimits\UserLimits.csproj", "{E890D910-DF66-6549-733D-101152B02A38}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FilteredContent", "Examples\.NET\Console\FilteredContent\FilteredContent.csproj", "{A7ABE8CF-DC82-0D8B-7C58-4198CB57584E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -695,6 +697,30 @@ Global
 		{E890D910-DF66-6549-733D-101152B02A38}.Release|x64.Build.0 = Release|x64
 		{E890D910-DF66-6549-733D-101152B02A38}.Release|x86.ActiveCfg = Release|x64
 		{E890D910-DF66-6549-733D-101152B02A38}.Release|x86.Build.0 = Release|x64
+		{A7ABE8CF-DC82-0D8B-7C58-4198CB57584E}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{A7ABE8CF-DC82-0D8B-7C58-4198CB57584E}.Debug|Any CPU.Build.0 = Debug|x64
+		{A7ABE8CF-DC82-0D8B-7C58-4198CB57584E}.Debug|ARM.ActiveCfg = Debug|x64
+		{A7ABE8CF-DC82-0D8B-7C58-4198CB57584E}.Debug|ARM.Build.0 = Debug|x64
+		{A7ABE8CF-DC82-0D8B-7C58-4198CB57584E}.Debug|iPhone.ActiveCfg = Debug|x64
+		{A7ABE8CF-DC82-0D8B-7C58-4198CB57584E}.Debug|iPhone.Build.0 = Debug|x64
+		{A7ABE8CF-DC82-0D8B-7C58-4198CB57584E}.Debug|iPhoneSimulator.ActiveCfg = Debug|x64
+		{A7ABE8CF-DC82-0D8B-7C58-4198CB57584E}.Debug|iPhoneSimulator.Build.0 = Debug|x64
+		{A7ABE8CF-DC82-0D8B-7C58-4198CB57584E}.Debug|x64.ActiveCfg = Debug|x64
+		{A7ABE8CF-DC82-0D8B-7C58-4198CB57584E}.Debug|x64.Build.0 = Debug|x64
+		{A7ABE8CF-DC82-0D8B-7C58-4198CB57584E}.Debug|x86.ActiveCfg = Debug|x86
+		{A7ABE8CF-DC82-0D8B-7C58-4198CB57584E}.Debug|x86.Build.0 = Debug|x86
+		{A7ABE8CF-DC82-0D8B-7C58-4198CB57584E}.Release|Any CPU.ActiveCfg = Release|x64
+		{A7ABE8CF-DC82-0D8B-7C58-4198CB57584E}.Release|Any CPU.Build.0 = Release|x64
+		{A7ABE8CF-DC82-0D8B-7C58-4198CB57584E}.Release|ARM.ActiveCfg = Release|x64
+		{A7ABE8CF-DC82-0D8B-7C58-4198CB57584E}.Release|ARM.Build.0 = Release|x64
+		{A7ABE8CF-DC82-0D8B-7C58-4198CB57584E}.Release|iPhone.ActiveCfg = Release|x64
+		{A7ABE8CF-DC82-0D8B-7C58-4198CB57584E}.Release|iPhone.Build.0 = Release|x64
+		{A7ABE8CF-DC82-0D8B-7C58-4198CB57584E}.Release|iPhoneSimulator.ActiveCfg = Release|x64
+		{A7ABE8CF-DC82-0D8B-7C58-4198CB57584E}.Release|iPhoneSimulator.Build.0 = Release|x64
+		{A7ABE8CF-DC82-0D8B-7C58-4198CB57584E}.Release|x64.ActiveCfg = Release|x64
+		{A7ABE8CF-DC82-0D8B-7C58-4198CB57584E}.Release|x64.Build.0 = Release|x64
+		{A7ABE8CF-DC82-0D8B-7C58-4198CB57584E}.Release|x86.ActiveCfg = Release|x86
+		{A7ABE8CF-DC82-0D8B-7C58-4198CB57584E}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -733,6 +759,7 @@ Global
 		{833324AE-7097-1961-40C5-7DE7F737B572} = {10B15083-017A-4F8A-9F45-A8BCBD43877B}
 		{1B176DCB-2F6A-0F63-DC03-F7AE16A27557} = {10B15083-017A-4F8A-9F45-A8BCBD43877B}
 		{E890D910-DF66-6549-733D-101152B02A38} = {10B15083-017A-4F8A-9F45-A8BCBD43877B}
+		{A7ABE8CF-DC82-0D8B-7C58-4198CB57584E} = {10B15083-017A-4F8A-9F45-A8BCBD43877B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {32217C45-3DBC-48F5-9517-D14CFF7F3504}
@@ -750,6 +777,7 @@ Global
 		Examples\ExampleShared\ExampleShared.projitems*{896cb901-3b0b-4d4a-5576-6567b9a88764}*SharedItemsImports = 5
 		Examples\ExampleShared\ExampleShared.projitems*{8a8a9a18-ac15-4e3b-9a1c-0574fcf7dccc}*SharedItemsImports = 5
 		Examples\ExampleShared\ExampleShared.projitems*{9ee1507d-c6ea-4d3d-88f6-e355611bf00c}*SharedItemsImports = 5
+		Examples\ExampleShared\ExampleShared.projitems*{a7abe8cf-dc82-0d8b-7c58-4198cb57584e}*SharedItemsImports = 5
 		Examples\ExampleShared\ExampleShared.projitems*{ae083cc3-9ba3-d536-afa8-0515baa71649}*SharedItemsImports = 5
 		Examples\ExampleShared\ExampleShared.projitems*{b6cf5ba6-b7c1-413e-a023-418255ed1dee}*SharedItemsImports = 5
 		Examples\ExampleShared\ExampleShared.projitems*{c23c68e5-66be-4e42-9184-d49a5c8326b8}*SharedItemsImports = 5

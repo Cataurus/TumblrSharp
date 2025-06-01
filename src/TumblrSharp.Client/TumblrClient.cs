@@ -1,10 +1,11 @@
 ﻿using DontPanic.TumblrSharp.OAuth;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Linq;
 
 namespace DontPanic.TumblrSharp.Client
 {
@@ -2551,6 +2552,250 @@ namespace DontPanic.TumblrSharp.Client
         }
 
         #endregion
+
+        #region FilteredContent
+
+        #region const
+
+        private const int maxCountOfFilteredContents = 200;
+        private const int maxLengthOfFilteredContent = 250;
+
+        #endregion
+
+        /// <summary>
+        /// Get a enumaration of strings as filter
+        /// </summary>
+        /// <returns>A <see cref="Task{TResult}"/> of a enumaration of filtered strings</returns>
+        public Task<string[]> GetFilteredContent()
+        {
+            return CallApiMethodAsync<FilteredContentResponse, string[]>(
+              new UserMethod("filtered_content", OAuthToken, HttpMethod.Get, null),
+              t => t.FilteredContent,
+              CancellationToken.None);
+        }
+
+        /// <summary>
+        /// adding new content filters
+        /// </summary>
+        /// <param name="filteredContents">a list filter to be set</param>
+        /// <returns>
+        /// A <see cref="Task"/> that can be used to track the operation. If the task succeeds, the new filter was set.
+        /// Otherwise <see cref="Task.Exception"/> will carry a <see cref="TumblrException"/>
+        /// representing the error occurred during the call.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="filteredContents" />must be none null
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        ///     <list type="bullet">
+        ///         <item>
+        ///             <description>
+        ///                 <paramref name="filteredContents" />items in the list of filters must not be empty
+        ///             </description>
+        ///         </item>
+        ///         <item>
+        ///             <description>
+        ///                 <paramref name="filteredContents" />items in the list of filters must not be whitespaces
+        ///             </description>
+        ///         </item>
+        ///         <item>
+        ///             <description>
+        ///                 <paramref name="filteredContents" />each filtered string cannot be more than 250 characters in length
+        ///             </description>
+        ///         </item>
+        ///         <item>
+        ///             <description>
+        ///                 <paramref name="filteredContents" />the maximum of filtered strings is 200
+        ///             </description>
+        ///         </item>
+        ///         <item>
+        ///             <description>
+        ///                 <paramref name="filteredContents" />already exist
+        ///             </description>
+        ///         </item>
+        ///     </list>
+        /// </exception>
+        public async Task SetFilteredContentAsync(IEnumerable<string> filteredContents)
+        {
+            if (filteredContents == null)
+                throw new ArgumentNullException(nameof(filteredContents));
+
+            var currentFilteredContents = await GetFilteredContent();
+
+            if (currentFilteredContents.Count() + filteredContents.Count() > maxCountOfFilteredContents)
+            {
+                string expMessage = string.Format("Each user can have a maximum of {0} filtered strings. You have only {1} free.",
+                    maxCountOfFilteredContents,
+                    maxCountOfFilteredContents - currentFilteredContents.Count());
+
+                throw new ArgumentException(expMessage, nameof(filteredContents));
+            }
+
+            MethodParameterSet parameters = new MethodParameterSet();
+
+            int i = 0;
+
+            foreach (var filteredContent in filteredContents)
+            {
+                if (filteredContent.Length == 0)
+                {
+                    throw new ArgumentException(nameof(filteredContents));
+                }
+
+                if (filteredContent.Trim().Length == 0)
+                {
+                    throw new ArgumentException(nameof(filteredContents));
+                }
+
+                if (filteredContent.Length > maxLengthOfFilteredContent)
+                {
+                    string expMessage = string.Format("The filterstring at position {0} of the List {1} is longer than the allowed length of {2} characters.",
+                        i,
+                        nameof(filteredContents),
+                        maxLengthOfFilteredContent);
+
+                    throw new ArgumentException(expMessage, nameof(filteredContents));
+                }
+
+                // !!! Tumblr has problems with whitespaces at the beginning of the filters
+                parameters.Add($"filtered_content[{i}]", filteredContent.Trim());
+
+                i++;
+            }
+
+            await CallApiMethodNoResultAsync(
+              new UserMethod("filtered_content", OAuthToken, HttpMethod.Post, parameters),
+              CancellationToken.None);
+        }
+
+        /// <summary>
+        /// adding new content filters
+        /// </summary>
+        /// <param name="filteredContent">filter to be set</param>
+        /// <returns>
+        /// A <see cref="Task"/> that can be used to track the operation. If the task succeeds, the new filter was set.
+        /// Otherwise <see cref="Task.Exception"/> will carry a <see cref="TumblrException"/>
+        /// representing the error occurred during the call.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="filteredContent" />must be none null
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        ///     <list type="bullet">
+        ///         <item>
+        ///             <description>
+        ///                 <paramref name="filteredContent" />must not be empty
+        ///             </description>
+        ///         </item>
+        ///         <item>
+        ///             <description>
+        ///                 <paramref name="filteredContent" />must not be whitespaces
+        ///             </description>
+        ///         </item>
+        ///         <item>
+        ///             <description>
+        ///                 <paramref name="filteredContent" />each filtered string cannot be more than 250 characters in length
+        ///             </description>
+        ///         </item>
+        ///         <item>
+        ///             <description>
+        ///                 <paramref name="filteredContent" />the maximum of filtered strings is 200
+        ///             </description>
+        ///         </item>
+        ///         <item>
+        ///             <description>
+        ///                 <paramref name="filteredContent" />already exist
+        ///             </description>
+        ///         </item>
+        ///     </list>
+        /// </exception>
+        public async Task SetFilteredContentAsync(string filteredContent)
+        {
+            if (filteredContent == null)
+                throw new ArgumentNullException(nameof(filteredContent));
+
+            if (filteredContent.Length == 0)
+                throw new ArgumentException("must not be empty", nameof(filteredContent));
+
+            if (filteredContent.Trim().Length == 0)
+                throw new ArgumentException("must not be whitespaces", nameof(filteredContent));
+
+            if (filteredContent.Length > maxLengthOfFilteredContent)
+            {
+                string expMessage = string.Format("Each filtered string cannot be more than {0} characters in length.", maxLengthOfFilteredContent);
+                throw new ArgumentException(expMessage, nameof(filteredContent));
+            }
+
+            var currentFilteredContents = await GetFilteredContent();
+
+            if (currentFilteredContents.Count() + 1 > maxCountOfFilteredContents)
+            {
+                string expMessage = string.Format("The maximum of {0} filtered strings is reached.", maxCountOfFilteredContents);
+
+                throw new ArgumentException(expMessage, nameof(filteredContent));
+            }
+
+            // !!! Tumblr has problems with whitespaces at the beginning of the filters
+            filteredContent = filteredContent.Trim();
+
+            // Test is necessary because Tumblr, unlike a list, only throws an exception "BAD REQUEST" when the filter is present.
+            foreach (var item in currentFilteredContents)
+            {
+                if (item == filteredContent)
+                {
+                    throw new ArgumentException($"{filteredContent} already exist", nameof(filteredContent));
+                }
+            }
+
+
+            MethodParameterSet parameters = new MethodParameterSet
+            {
+                { "filtered_content", filteredContent }
+            };
+
+            await CallApiMethodNoResultAsync(
+              new UserMethod("filtered_content", OAuthToken, HttpMethod.Post, parameters),
+              CancellationToken.None);
+        }
+
+        /// <summary>
+        /// delete a filter
+        /// </summary>
+        /// <param name="filteredContent"></param>
+        /// <returns>
+        ///  A <see cref="Task"/> that can be used to track the operation. If the task succeeds, the filter was delete.
+        /// Otherwise <see cref="Task.Exception"/> will carry a <see cref="TumblrException"/>
+        /// representing the error occurred during the call.
+        /// </returns>
+        public async Task DeleteFilteredContent(string filteredContent)
+        {
+            if (filteredContent == null)
+                throw new ArgumentNullException(nameof(filteredContent));
+
+            if (filteredContent.Length == 0)
+                throw new ArgumentException(nameof(filteredContent));
+
+            if (filteredContent.Trim().Length == 0)
+                throw new ArgumentException(nameof(filteredContent));
+
+            if (filteredContent.Length > maxLengthOfFilteredContent)
+            {
+                string expMessage = string.Format("Each filtered string cannot be more than {0} characters in length.", maxLengthOfFilteredContent);
+                throw new ArgumentException(expMessage, nameof(filteredContent));
+            }
+
+            MethodParameterSet parameters = new MethodParameterSet
+            {
+                { "filtered_content", filteredContent}
+            };
+
+            await CallApiMethodNoResultAsync(
+              new UserMethod("filtered_content", OAuthToken, HttpMethod.Delete, parameters),
+              CancellationToken.None);
+        }
+
+        #endregion
+
 
 
         #endregion

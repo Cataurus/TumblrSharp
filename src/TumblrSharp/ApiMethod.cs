@@ -60,8 +60,8 @@ namespace DontPanic.TumblrSharp
 			if (methodUrl.Length == 0)
 				throw new ArgumentException("Method URL cannot be empty.", "methodUrl");
 
-			if (httpMethod != HttpMethod.Get && httpMethod != HttpMethod.Post)
-				throw new ArgumentException("The http method must be either GET or POST.", "httpMethod");
+			if (httpMethod != HttpMethod.Get && httpMethod != HttpMethod.Post && httpMethod != HttpMethod.Delete)
+				throw new ArgumentException("The http method must be either GET, POST or DELETE.", "httpMethod");
 
 			this.methodUrl = methodUrl;
 			this.httpMethod = httpMethod;
