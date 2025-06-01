@@ -321,11 +321,7 @@ namespace DontPanic.TumblrSharp
 						{
 							TumblrError[] errorResponse;
 
-#if (NETSTANDARD1_3 || NETSTANDARD2_0 || NETCOREAPP2_2)
 							errorResponse = Array.Empty<TumblrError>();
-#else
-							errorResponse = new TumblrError[0];
-#endif
 
 							switch (response.StatusCode)
 							{

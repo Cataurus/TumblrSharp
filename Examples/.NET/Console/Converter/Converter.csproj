@@ -4,6 +4,8 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	<Platforms>x64;x86;ARM64</Platforms>
+	<OutputPath>bin\$(Configuration)\$(Platform)\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>

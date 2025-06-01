@@ -9,7 +9,7 @@ namespace Block
 {
     class Program
     {
-        static async System.Threading.Tasks.Task Main(string[] args)
+        static async Task Main()
         {
             Console.WriteLine("Example - Block method");
             Console.WriteLine("----------------------");

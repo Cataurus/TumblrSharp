@@ -420,6 +420,90 @@ namespace DontPanic.TumblrSharp.Client
 
         #endregion
 
+        #region GetBlogLikesAsync
+
+        /// <summary>
+        /// Asynchronously retrieves the publicly exposed likes from a blog.
+        /// </summary>
+        /// <remarks>
+        /// See: http://www.tumblr.com/docs/en/api/v2#blog-likes
+        /// </remarks>
+        /// <param name="blogName">
+        /// The name of the blog.
+        /// </param>
+        /// <param name="startIndex">
+        /// The offset at which to start retrieving the likes. Use 0 to start retrieving from the latest like.
+        /// </param>
+        /// <param name="count">
+        /// The number of likes to retrieve. Must be between 1 and 20.
+        /// </param>
+        /// <param name="before">
+        /// The timestamp before when to retrieve likes. 
+        /// </param>
+        /// <param name="after">
+        /// The timestamp after when to retrieve likes. 
+        /// </param>
+        /// <returns>
+        /// A <see cref="Task{Likes}"/> that can be used to track the operation. If the task succeeds, the <see cref="Task{Likes}.Result"/> will
+        /// carry a <see cref="Likes"/> instance. Otherwise <see cref="Task.Exception"/> will carry a <see cref="TumblrException"/>
+        /// representing the error occurred during the call.
+        /// </returns>
+        /// <exception cref="ObjectDisposedException">
+        /// The object has been disposed.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="blogName"/> is <b>null</b>.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="blogName"/> is empty.
+        /// </exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">
+        /// <list type="bullet">
+        /// <item>
+        ///		<description>
+        ///			<paramref name="startIndex"/> is less than 0.
+        ///		</description>
+        ///	</item>
+        ///	<item>
+        ///		<description>
+        ///			<paramref name="count"/> is less than 1 or greater than 20.
+        ///		</description>
+        ///	</item>
+        /// </list>
+        /// </exception>
+        public Task<Likes> GetBlogLikesAsync(string blogName, int startIndex = 0, int count = 20, DateTime? before = null, DateTime? after = null)
+        {
+            if (disposed)
+                throw new ObjectDisposedException("TumblrClient");
+
+            if (blogName == null)
+                throw new ArgumentNullException("blogName");
+
+            if (blogName.Length == 0)
+                throw new ArgumentException("Blog name cannot be empty.", "blogName");
+
+            if (startIndex < 0)
+                throw new ArgumentOutOfRangeException("startIndex", "startIndex must be greater or equal to zero.");
+
+            if (count < 1 || count > 20)
+                throw new ArgumentOutOfRangeException("count", "count must be between 1 and 20.");
+
+            MethodParameterSet parameters = new MethodParameterSet
+            {
+                { "api_key", apiKey },
+                { "offset", startIndex, 0 },
+                { "limit", count, 0 },
+                { "before", before.HasValue ? DateTimeHelper.ToTimestamp(before.Value).ToString() : null, null },
+                { "after", after.HasValue ? DateTimeHelper.ToTimestamp(after.Value).ToString() : null, null }
+            };
+
+            return CallApiMethodAsync<Likes>(
+              new BlogMethod(blogName, "likes", null, HttpMethod.Get, parameters),
+              CancellationToken.None);
+        }
+
+        #endregion
+
         #region GetPostsAsync
 
         /// <summary>
@@ -588,89 +672,6 @@ namespace DontPanic.TumblrSharp.Client
               CancellationToken.None);
         }
 
-        #endregion
-
-        #region GetBlogLikesAsync
-
-        /// <summary>
-        /// Asynchronously retrieves the publicly exposed likes from a blog.
-        /// </summary>
-        /// <remarks>
-        /// See: http://www.tumblr.com/docs/en/api/v2#blog-likes
-        /// </remarks>
-        /// <param name="blogName">
-        /// The name of the blog.
-        /// </param>
-        /// <param name="startIndex">
-        /// The offset at which to start retrieving the likes. Use 0 to start retrieving from the latest like.
-        /// </param>
-        /// <param name="count">
-        /// The number of likes to retrieve. Must be between 1 and 20.
-        /// </param>
-        /// <param name="before">
-        /// The timestamp before when to retrieve likes. 
-        /// </param>
-        /// <param name="after">
-        /// The timestamp after when to retrieve likes. 
-        /// </param>
-        /// <returns>
-        /// A <see cref="Task{Likes}"/> that can be used to track the operation. If the task succeeds, the <see cref="Task{Likes}.Result"/> will
-        /// carry a <see cref="Likes"/> instance. Otherwise <see cref="Task.Exception"/> will carry a <see cref="TumblrException"/>
-        /// representing the error occurred during the call.
-        /// </returns>
-        /// <exception cref="ObjectDisposedException">
-        /// The object has been disposed.
-        /// </exception>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="blogName"/> is <b>null</b>.
-        /// </exception>
-        /// <exception cref="ArgumentException">
-        /// <paramref name="blogName"/> is empty.
-        /// </exception>
-        /// <exception cref="System.ArgumentOutOfRangeException">
-        /// <list type="bullet">
-        /// <item>
-        ///		<description>
-        ///			<paramref name="startIndex"/> is less than 0.
-        ///		</description>
-        ///	</item>
-        ///	<item>
-        ///		<description>
-        ///			<paramref name="count"/> is less than 1 or greater than 20.
-        ///		</description>
-        ///	</item>
-        /// </list>
-        /// </exception>
-        public Task<Likes> GetBlogLikesAsync(string blogName, int startIndex = 0, int count = 20, DateTime? before = null, DateTime? after = null)
-        {
-            if (disposed)
-                throw new ObjectDisposedException("TumblrClient");
-
-            if (blogName == null)
-                throw new ArgumentNullException("blogName");
-
-            if (blogName.Length == 0)
-                throw new ArgumentException("Blog name cannot be empty.", "blogName");
-
-            if (startIndex < 0)
-                throw new ArgumentOutOfRangeException("startIndex", "startIndex must be greater or equal to zero.");
-
-            if (count < 1 || count > 20)
-                throw new ArgumentOutOfRangeException("count", "count must be between 1 and 20.");
-
-            MethodParameterSet parameters = new MethodParameterSet
-            {
-                { "api_key", apiKey },
-                { "offset", startIndex, 0 },
-                { "limit", count, 0 },
-                { "before", before.HasValue ? DateTimeHelper.ToTimestamp(before.Value).ToString() : null, null },
-                { "after", after.HasValue ? DateTimeHelper.ToTimestamp(after.Value).ToString() : null, null }
-            };
-
-            return CallApiMethodAsync<Likes>(
-              new BlogMethod(blogName, "likes", null, HttpMethod.Get, parameters),
-              CancellationToken.None);
-        }
         #endregion
 
         #region GetFollowersAsync
@@ -1228,91 +1229,7 @@ namespace DontPanic.TumblrSharp.Client
         }
 
         #endregion
-
-        #region GetQueuedPostsAsync
-
-        /// <summary>
-        /// Asynchronously returns posts in the current user's queue.
-        /// </summary>
-        /// <remarks>
-        /// See: http://www.tumblr.com/docs/en/api/v2#blog-queue
-        /// </remarks>
-        /// <param name="blogName">
-        /// The name of the blog for which to retrieve queued posts.
-        /// </param>
-        /// <param name="startIndex">
-        /// The offset at which to start retrieving the posts. Use 0 to start retrieving from the latest post.
-        /// </param>
-        /// <param name="count">
-        /// The number of posts to retrieve. Must be between 1 and 20.
-        /// </param>
-        /// <param name="filter">
-        /// A <see cref="PostFilter"/> to apply.
-        /// </param>
-        /// <returns>
-        /// A Task&lt;<see cref="BasePost"/>[]&gt; that can be used to track the operation. If the task succeeds, the Task&lt;<see cref="BasePost"/>[]&gt;.Result will
-        /// carry an array of posts. Otherwise <see cref="Task.Exception"/> will carry a <see cref="TumblrException"/>
-        /// representing the error occurred during the call.
-        /// </returns>
-        /// <exception cref="ObjectDisposedException">
-        /// The object has been disposed.
-        /// </exception>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="blogName"/> is <b>null</b>.
-        ///	</exception>
-        /// <exception cref="ArgumentException">
-        /// <paramref name="blogName"/> is empty.
-        ///	</exception>
-        /// <exception cref="System.ArgumentOutOfRangeException">
-        /// <list type="bullet">
-        /// <item>
-        ///		<description>
-        ///			<paramref name="startIndex"/> is less than 0.
-        ///		</description>
-        ///	</item>
-        ///	<item>
-        ///		<description>
-        ///			<paramref name="count"/> is less than 1 or greater than 20.
-        ///		</description>
-        ///	</item>
-        /// </list>
-        /// </exception>
-        /// <exception cref="InvalidOperationException">
-        /// This <see cref="TumblrClient"/> instance does not have an OAuth token specified.
-        /// </exception>
-        public Task<BasePost[]> GetQueuedPostsAsync(string blogName, long startIndex = 0, int count = 20, PostFilter filter = PostFilter.Html)
-        {
-            if (disposed)
-                throw new ObjectDisposedException("TumblrClient");
-
-            if (blogName == null)
-                throw new ArgumentNullException("blogName");
-
-            if (blogName.Length == 0)
-                throw new ArgumentException("Blog name cannot be empty.", "blogName");
-
-            if (startIndex < 0)
-                throw new ArgumentOutOfRangeException("startIndex", "startIndex must be greater or equal to zero.");
-
-            if (count < 1 || count > 20)
-                throw new ArgumentOutOfRangeException("count", "count must be between 1 and 20.");
-
-            if (OAuthToken == null)
-                throw new InvalidOperationException("GetQueuedPostsAsync method requires an OAuth token to be specified.");
-
-            MethodParameterSet parameters = new MethodParameterSet();
-            parameters.Add("offset", startIndex, 0);
-            parameters.Add("limit", count, 0);
-            parameters.Add("filter", filter.ToString().ToLowerInvariant(), "html");
-
-            return CallApiMethodAsync<PostCollection, BasePost[]>(
-              new BlogMethod(blogName, "posts/queue", OAuthToken, HttpMethod.Get, parameters),
-              r => r.Posts,
-              CancellationToken.None);
-        }
-
-        #endregion
-
+                
         #region GetDraftPostsAsync
 
         /// <summary>
@@ -1503,6 +1420,225 @@ namespace DontPanic.TumblrSharp.Client
               new BlogMethod(blogName, "post/delete", OAuthToken, HttpMethod.Post, parameters),
               CancellationToken.None);
         }
+
+        #endregion
+
+        #region Queue
+
+        #region GetQueuedPostsAsync
+
+        /// <summary>
+        /// Asynchronously returns posts in the current user's queue.
+        /// </summary>
+        /// <remarks>
+        /// See: http://www.tumblr.com/docs/en/api/v2#blog-queue
+        /// </remarks>
+        /// <param name="blogName">
+        /// The name of the blog for which to retrieve queued posts.
+        /// </param>
+        /// <param name="startIndex">
+        /// The offset at which to start retrieving the posts. Use 0 to start retrieving from the latest post.
+        /// </param>
+        /// <param name="count">
+        /// The number of posts to retrieve. Must be between 1 and 20.
+        /// </param>
+        /// <param name="filter">
+        /// A <see cref="PostFilter"/> to apply.
+        /// </param>
+        /// <returns>
+        /// A Task&lt;<see cref="BasePost"/>[]&gt; that can be used to track the operation. If the task succeeds, the Task&lt;<see cref="BasePost"/>[]&gt;.Result will
+        /// carry an array of posts. Otherwise <see cref="Task.Exception"/> will carry a <see cref="TumblrException"/>
+        /// representing the error occurred during the call.
+        /// </returns>
+        /// <exception cref="ObjectDisposedException">
+        /// The object has been disposed.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="blogName"/> is <b>null</b>.
+        ///	</exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="blogName"/> is empty.
+        ///	</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">
+        /// <list type="bullet">
+        /// <item>
+        ///		<description>
+        ///			<paramref name="startIndex"/> is less than 0.
+        ///		</description>
+        ///	</item>
+        ///	<item>
+        ///		<description>
+        ///			<paramref name="count"/> is less than 1 or greater than 20.
+        ///		</description>
+        ///	</item>
+        /// </list>
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// This <see cref="TumblrClient"/> instance does not have an OAuth token specified.
+        /// </exception>
+        /// 
+        /// <example>
+        /// Returns the first five posts that are still on queue.
+        /// <code>
+        ///     var queueList = await tumblrClient.GetQueuedPostsAsync("NameOfYourBlog", 0, 5);
+        ///     
+        ///     foreach (var item in queueList)
+        ///     {
+        ///         Console.WriteLine($"PostID {item.Id}");
+        ///     }
+        /// </code>
+        /// </example>
+        public Task<BasePost[]> GetQueuedPostsAsync(string blogName, long startIndex = 0, int count = 20, PostFilter filter = PostFilter.Html)
+        {
+            if (disposed)
+                throw new ObjectDisposedException("TumblrClient");
+
+            if (blogName == null)
+                throw new ArgumentNullException("blogName");
+
+            if (blogName.Length == 0)
+                throw new ArgumentException("Blog name cannot be empty.", "blogName");
+
+            if (startIndex < 0)
+                throw new ArgumentOutOfRangeException("startIndex", "startIndex must be greater or equal to zero.");
+
+            if (count < 1 || count > 20)
+                throw new ArgumentOutOfRangeException("count", "count must be between 1 and 20.");
+
+            if (OAuthToken == null)
+                throw new InvalidOperationException("GetQueuedPostsAsync method requires an OAuth token to be specified.");
+
+            MethodParameterSet parameters = new MethodParameterSet
+            {
+                { "offset", startIndex, 0 },
+                { "limit", count, 0 },
+                { "filter", filter.ToString().ToLowerInvariant(), "html" }
+            };
+
+            return CallApiMethodAsync<PostCollection, BasePost[]>(
+              new BlogMethod(blogName, "posts/queue", OAuthToken, HttpMethod.Get, parameters),
+              r => r.Posts,
+              CancellationToken.None);
+        }
+
+        #endregion
+
+        #region QueueRecorder
+
+        /// <summary>
+        /// This allows you to reorder a post within the queue, moving it after an existing queued post, or to the top.
+        /// </summary>
+        /// <param name="blogName">blog identifier for queue</param>
+        /// <param name="postId">Post ID to move</param>
+        /// <param name="insertAfter">Which post ID to move it after, or 0 to make it the first post</param>
+        /// <returns>
+        /// A <see cref="Task"/> that can be used to track the operation. If the task fails, <see cref="Exception"/> 
+        /// will carry a <see cref="TumblrException"/> representing the error occurred during the call.
+        /// </returns>
+        /// <exception cref="ObjectDisposedException">
+        /// The object has been disposed.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="blogName"/> is <b>null</b>.
+        ///	</exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="blogName"/> is empty.
+        ///	</exception>
+        ///	<exception cref="ArgumentOutOfRangeException">
+        /// <list type="bullet">
+        /// <item>
+        ///		<description>
+        ///			<paramref name="postId"/> is less than 0 or smaller
+        ///		</description>
+        ///	</item>
+        ///	<item>
+        ///		<description>
+        ///			<paramref name="insertAfter"/> is less than smaller 0
+        ///		</description>
+        ///	</item>
+        /// </list>
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// This <see cref="TumblrClient"/> instance does not have an OAuth token specified
+        /// </exception>
+        /// Move the post in queue with Id 123456 to 3rd position
+        /// <example>
+        ///     <code>
+        ///         tumblrClient.QueueRecorder("NameOfYourBlog", 123456, 2);
+        ///     </code>
+        /// </example>
+        public Task QueueRecorder(string blogName, long postId, long insertAfter = 0)
+        {
+            if (disposed)
+                throw new ObjectDisposedException(nameof(TumblrClient));
+
+            if (blogName == null)
+                throw new ArgumentNullException(nameof(blogName));
+
+            if (blogName.Length == 0)
+                throw new ArgumentException("Blog name cannot be empty.", nameof(blogName));
+
+            if (postId <= 0)
+                throw new ArgumentOutOfRangeException(nameof(postId), "Post ID must be greater to zero.");
+
+            if (insertAfter < 0)
+                throw new ArgumentOutOfRangeException(nameof(insertAfter), "InsertAfter must be greater or equal to zero.");
+
+            MethodParameterSet parameters = new MethodParameterSet
+            {
+                { "post_id", postId.ToString() },
+                { "insert_after", insertAfter.ToString() }
+            };
+
+            return CallApiMethodNoResultAsync(
+              new BlogMethod(blogName, "posts/queue/reorder", OAuthToken, HttpMethod.Post, parameters),
+              CancellationToken.None);
+        }
+
+        #endregion
+
+        #region QueueShuffle
+
+        /// <summary>
+        /// This randomly shuffles the queue for the specified blog
+        /// </summary>
+        /// <param name="blogName">blog identifier for queue</param>
+        /// <returns>
+        /// A <see cref="Task"/> that can be used to track the operation. If the task fails, <see cref="Exception"/> 
+        /// will carry a <see cref="TumblrException"/> representing the error occurred during the call.
+        /// </returns>
+        /// 
+        /// <example>
+        ///     <code>
+        ///         try
+        ///         {
+        ///             tumblrClient.QueueShuffle("NameOfYourBlog");
+        ///             
+        ///             Console.WriteLine("Operation not successful");
+        ///         }
+        ///         except (TumblrException exp)
+        ///         {
+        ///             Console.WriteLine($"Operation not successful - {exp.msg}");
+        ///         }
+        ///     </code>
+        /// </example>
+        public Task QueueShuffle(string blogName)
+        {
+            if (disposed)
+                throw new ObjectDisposedException(nameof(TumblrClient));
+
+            if (blogName == null)
+                throw new ArgumentNullException(nameof(blogName));
+
+            if (blogName.Length == 0)
+                throw new ArgumentException("Blog name cannot be empty.", nameof(blogName));
+
+            return CallApiMethodNoResultAsync(
+              new BlogMethod(blogName, "posts/queue/shuffle", OAuthToken, HttpMethod.Post),
+              CancellationToken.None);
+        }
+
+        #endregion
 
         #endregion
 
