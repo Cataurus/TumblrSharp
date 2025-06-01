@@ -79,7 +79,7 @@ namespace DontPanic.TumblrSharp.Client
 
         #region Blog Methods
 
-        #region Block
+        #region Blocks
 
         /// <summary>
         /// Get the blogs that the requested blog is currently blocking
@@ -125,7 +125,7 @@ namespace DontPanic.TumblrSharp.Client
         ///     while ( blogs.Length == 20 )
         /// </code>
         /// </example>
-        public Task<BlogBase[]> GetBlock(string blogName, int startIndex = 0, int count = 20)
+        public Task<BlogBase[]> GetBlocks(string blogName, int startIndex = 0, int count = 20)
         {
             if (blogName == null)
                 throw new ArgumentNullException(nameof(blogName));
@@ -204,7 +204,7 @@ namespace DontPanic.TumblrSharp.Client
         ///         Console.WriteLine("Success");
         ///     </code>
         /// </example>
-        public Task SetBlock(string blogName, string toBlockedBlogName)
+        public Task SetBlocks(string blogName, string toBlockedBlogName)
         {
             if (blogName == null)
                 throw new ArgumentNullException(nameof(blogName));
@@ -280,7 +280,7 @@ namespace DontPanic.TumblrSharp.Client
         ///         Console.WriteLine("Success");
         ///     </code>
         /// </example>
-        public Task SetBlock(string blogName, long postID)
+        public Task SetBlocks(string blogName, long postID)
         {
             if (blogName == null)
                 throw new ArgumentNullException(nameof(blogName));
@@ -347,7 +347,7 @@ namespace DontPanic.TumblrSharp.Client
         ///         Console.WriteLine("Success");
         ///     </code>
         /// </example>
-        public Task RemoveBlock(string blogName, string blockedBlogName = null)
+        public Task RemoveBlocks(string blogName, string blockedBlogName = null)
         {
             if (blogName == null)
                 throw new ArgumentNullException(nameof(blogName));
@@ -369,6 +369,51 @@ namespace DontPanic.TumblrSharp.Client
 
             return CallApiMethodNoResultAsync(
                     new BlogMethod(blogName, "blocks", OAuthToken, HttpMethod.Post, parameters),
+                    CancellationToken.None);
+        }
+
+        /// <summary>
+        ///  Block a list of Blogs
+        /// </summary>
+        /// <param name="blogName">Any blog identifie</param>
+        /// <param name="blockedTumbleLogs"> list of tumblelogs to block, specified by any blog identifier</param>
+        /// <param name="force">Whether to force the block to go through even if it requires canceling a Post+ Subscription</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="blogName"/> is null.
+        /// <exception cref="ArgumentException">
+        /// <list type="bullet">
+        ///	<item>
+        ///		<description>
+        ///         <paramref name="blogName"/> is empty.
+        ///     </description>
+        ///	</item>
+        ///	<item>
+        ///		<description>
+        ///			<paramref name="blockedTumbleLogs"/> is empty
+        ///		</description>
+        ///	</item>
+        /// </list>
+        /// </exception>
+        public Task SetBlocks(string blogName, IEnumerable<string> blockedTumbleLogs, bool force = false)
+        {
+            if (blogName == null)
+                throw new ArgumentNullException(nameof(blogName));
+
+            if (blogName.Length == 0)
+                throw new ArgumentException("Blog name cannot be empty.", nameof(blogName));
+
+            if (blockedTumbleLogs == null || !blockedTumbleLogs.Any())
+                throw new ArgumentException("blockedTumbleLogs cannot be null or empty.", nameof(blockedTumbleLogs));
+
+            MethodParameterSet parameters = new MethodParameterSet
+            {
+                {"blocked_tumblelogs", string.Join(",", blockedTumbleLogs), ""},
+                {"force", force, false}
+            };
+
+            return CallApiMethodNoResultAsync(
+                    new BlogMethod(blogName, "blocks/bulk", OAuthToken, HttpMethod.Post, parameters),
                     CancellationToken.None);
         }
 
@@ -2767,6 +2812,13 @@ namespace DontPanic.TumblrSharp.Client
         /// Otherwise <see cref="Task.Exception"/> will carry a <see cref="TumblrException"/>
         /// representing the error occurred during the call.
         /// </returns>
+        /// <example>
+        /// <code>
+        ///     using TumblrClient tumblrClient = new TumblrClient("your_secret_key", "your_secret_token", new Token("your_access_key", "your_access_scret"));
+        ///     
+        ///     await tumblrClient.DeleteFilteredContent("girls");
+        /// </code>
+        /// </example>
         public async Task DeleteFilteredContent(string filteredContent)
         {
             if (filteredContent == null)
@@ -2786,7 +2838,7 @@ namespace DontPanic.TumblrSharp.Client
 
             MethodParameterSet parameters = new MethodParameterSet
             {
-                { "filtered_content", filteredContent}
+                {"filtered_content", filteredContent}
             };
 
             await CallApiMethodNoResultAsync(

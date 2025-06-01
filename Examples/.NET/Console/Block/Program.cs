@@ -5,7 +5,7 @@ using ExampleShared;
 using System;
 using System.Threading.Tasks;
 
-namespace Block
+namespace Blocks
 {
     class Program
     {

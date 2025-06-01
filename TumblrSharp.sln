@@ -93,7 +93,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demo Daten", "Demo Daten", 
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ExampleShared", "Examples\ExampleShared\ExampleShared.shproj", "{4B0B35C7-251F-4952-AA70-D98F8B14CB95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Block", "Examples\.NET\Console\Block\Block.csproj", "{896CB901-3B0B-4D4A-5576-6567B9A88764}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blocks", "Examples\.NET\Console\Block\Blocks.csproj", "{896CB901-3B0B-4D4A-5576-6567B9A88764}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Queue", "Examples\.NET\Console\Queue\Queue.csproj", "{AE083CC3-9BA3-D536-AFA8-0515BAA71649}"
 EndProject
