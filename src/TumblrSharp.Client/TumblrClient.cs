@@ -750,6 +750,70 @@ namespace DontPanic.TumblrSharp.Client
 
         #endregion
 
+        #region GetFollowedByAsync
+
+        /// <summary>
+        /// This method can be used to check if one of your blogs is followed by another blog.
+        /// </summary>
+        /// <param name="blogName">name of your blog</param>
+        /// <param name="query">The name of the blog that may be following your blog</param>
+        /// <returns>True when the queried blog follows your blog, false otherwise.</returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// <list type="bullet">
+        /// <item>
+        ///		<description>
+        ///			<paramref name="blogName"/> cannot be null.
+        ///		</description>
+        ///	</item>
+        ///	<item>
+        ///		<description>
+        ///			<paramref name="query"/> cannot be null.
+        ///		</description>
+        ///	</item>
+        /// </list>
+        /// </exception>
+        /// <exception cref="System.ArgumentException">
+        /// <list type="bullet">
+        /// <item>
+        ///		<description>
+        ///			<paramref name="blogName"/> cannot be empty.
+        ///		</description>
+        ///	</item>
+        ///	<item>
+        ///		<description>
+        ///			<paramref name="query"/> cannot be empty.
+        ///		</description>
+        ///	</item>
+        /// </list>
+        /// </exception>
+        public async Task<bool> GetFollowedByAsync(string blogName, string query)
+        {
+            if (blogName == null)
+                throw new ArgumentNullException(nameof(blogName));
+
+            if (blogName.Length == 0)
+                throw new ArgumentException("Blog name cannot be empty.", nameof(blogName));
+
+            if (query == null)
+                throw new ArgumentNullException(nameof(query));
+
+            if (query.Length == 0)
+                throw new ArgumentException("Query cannot be empty.", nameof(query));
+
+            MethodParameterSet parameters = new MethodParameterSet
+            {
+                {"query", query}
+            };
+
+            var result = await CallApiMethodAsync<FollowerBy>(
+              new BlogMethod(blogName, "followed_by", OAuthToken, HttpMethod.Get, parameters),
+              CancellationToken.None, null);
+
+            return result.IsFollower;
+        }
+
+        #endregion
+
         #region CreatePostAsync
 
         /// <summary>
